@@ -1,0 +1,18 @@
+[submodule "forensics/binwalk"]
+	path = forensics/binwalk
+	url = https://github.com/ReFirmLabs/binwalk
+[submodule "forensics/jefferson"]
+	path = forensics/jefferson
+	url = https://github.com/sviehb/jefferson
+[submodule "forensics/ubidump"]
+	path = forensics/ubidump
+	url = https://github.com/nlitsme/ubidump
+[submodule "forensics/sasquatch"]
+	path = forensics/sasquatch
+	url = https://github.com/devttys0/sasquatch
+[submodule "forensics/ubi_reader"]
+	path = forensics/ubi_reader
+	url = https://github.com/jrspruitt/ubi_reader
+[submodule "forensics/yaffshiv"]
+	path = forensics/yaffshiv
+	url = https://github.com/devttys0/yaffshiv

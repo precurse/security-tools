@@ -1,0 +1,29 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+# From https://github.com/ReFirmLabs/binwalk/blob/master/INSTALL.md
+
+[packages]
+# ubidump dependencies
+crcmod = "*"
+python-lzo = "*"
+
+# binwalk dependencies
+# https://github.com/ReFirmLabs/binwalk/blob/master/INSTALL.md
+capstone = "*"
+nose = "*"
+coverage = "*"
+pyliblzma = "*"
+cryptography = "*"
+
+# Local packages
+binwalk = {path = "./forensics/binwalk"}
+jefferson = {path = "./forensics/jefferson"}
+ubi-reader = {path = "./forensics/ubi_reader"}
+yaffshiv = {path = "./forensics/yaffshiv"}
+
+[dev-packages]
+
+[requires]
+python_version = "2.7"
