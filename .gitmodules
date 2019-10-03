@@ -19,3 +19,9 @@
 [submodule "web/sqlmap"]
 	path = web/sqlmap
 	url = https://github.com/sqlmapproject/sqlmap.git
+[submodule "enumeration/nmap-script-vulscan"]
+	path = enumeration/nmap-script-vulscan
+	url = https://github.com/scipag/vulscan
+[submodule "enumeration/nmap-script-vulners"]
+	path = enumeration/nmap-script-vulners
+	url = https://github.com/vulnersCom/nmap-vulners.git
