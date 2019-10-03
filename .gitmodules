@@ -16,3 +16,6 @@
 [submodule "forensics/yaffshiv"]
 	path = forensics/yaffshiv
 	url = https://github.com/devttys0/yaffshiv
+[submodule "web/sqlmap"]
+	path = web/sqlmap
+	url = https://github.com/sqlmapproject/sqlmap.git
