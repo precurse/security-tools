@@ -17,6 +17,11 @@ coverage = "*"
 pyliblzma = "*"
 cryptography = "*"
 
+# HTTP Testing
+sqlmap = "*"
+wfuzz = "*"
+
+
 # Local packages
 binwalk = {path = "./forensics/binwalk"}
 jefferson = {path = "./forensics/jefferson"}
