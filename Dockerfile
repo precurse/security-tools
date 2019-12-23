@@ -1,12 +1,30 @@
-FROM ubuntu:18.04
+FROM ubuntu:19.04
 
 RUN apt update && \
-    apt install -y python-pip libcurl4-openssl-dev libssl-dev && \
-    pip install pipenv
+    DEBIAN_FRONTEND=noninteractive \
+    apt install -y \
+    net-tools \
+    iputils-ping \
+    python \
+    python-pip \
+    python-lzma \
+    python3 \
+    python3-distutils \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    cpio \
+    bsdmainutils \
+    less
+    #    binwalk
 
 COPY . /work
 WORKDIR /work
 
-RUN pipenv install
+RUN cd forensics/binwalk && \
+      python3 setup.py install && \
+      pip install cstruct && \
+    cd /work/forensics/jefferson && \
+    python setup.py install
+
 
 ENTRYPOINT ["/bin/bash"]
