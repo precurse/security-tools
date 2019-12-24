@@ -1,9 +1,6 @@
 [submodule "forensics/binwalk"]
 	path = files/forensics/binwalk
 	url = https://github.com/ReFirmLabs/binwalk
-[submodule "web/sqlmap"]
-	path = files/web/sqlmap
-	url = https://github.com/sqlmapproject/sqlmap.git
 [submodule "enumeration/nmap-script-vulscan"]
 	path = files/enumeration/nmap-script-vulscan
 	url = https://github.com/scipag/vulscan

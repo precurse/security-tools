@@ -65,10 +65,8 @@ RUN wget http://mirrors.kernel.org/ubuntu/pool/universe/c/cramfs/cramfsprogs_1.1
     DEBIAN_FRONTEND=noninteractive \
     ./forensics/binwalk/deps.sh --yes && \
     cd forensics/binwalk && \
-    python3 setup.py install
+    python3 setup.py install && \
+    pip3 install sqlmap
 
-
-# RUN cd forensics/sasquatch/ && \
-#     ./build.sh
 
 ENTRYPOINT ["/bin/bash"]
