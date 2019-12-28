@@ -66,7 +66,7 @@ RUN dpkg -i /tmp/*.deb && \
     ./forensics/binwalk/deps.sh --yes && \
     cd ./forensics/binwalk && \
     python3 setup.py install && \
-    pip3 install \
+    pip3 --no-cache-dir install \
       capstone \
       sqlmap \
       wfuzz \
