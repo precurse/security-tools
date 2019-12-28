@@ -1,5 +1,5 @@
 FROM ubuntu:19.04
-ENV IMAGEDATE 2019-12-24
+ENV IMAGEDATE 2019-12-28
 
 WORKDIR /tmp
 
@@ -66,7 +66,10 @@ RUN wget http://mirrors.kernel.org/ubuntu/pool/universe/c/cramfs/cramfsprogs_1.1
     ./forensics/binwalk/deps.sh --yes && \
     cd forensics/binwalk && \
     python3 setup.py install && \
-    pip3 install sqlmap
+    pip3 install \
+      sqlmap \
+      wfuzz \
+      scapy
 
 
 ENTRYPOINT ["/bin/bash"]
