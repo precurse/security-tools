@@ -16,6 +16,9 @@ FROM ubuntu:19.04
 
 COPY --from=0 /tmp/*.deb /tmp/
 
+COPY ./files/ /work
+WORKDIR /work
+
 RUN dpkg -i /tmp/*.deb && \
     apt update && \
     DEBIAN_FRONTEND=noninteractive \
@@ -55,30 +58,26 @@ RUN dpkg -i /tmp/*.deb && \
     python3-distutils \
     libcurl4-openssl-dev \
     libssl-dev && \
-    rm -rf /var/lib/apt/lists/*
-
-COPY ./files/ /work
-WORKDIR /work
-
-RUN wget http://mirrors.kernel.org/ubuntu/pool/universe/c/cramfs/cramfsprogs_1.1-6ubuntu1_amd64.deb -O /tmp/cramfs.deb && \
+    # cramfs binwalk dependency
+    wget http://mirrors.kernel.org/ubuntu/pool/universe/c/cramfs/cramfsprogs_1.1-6ubuntu1_amd64.deb -O /tmp/cramfs.deb && \
     dpkg -i /tmp/cramfs.deb && \
-    rm -rf /tmp/* && \
+    # Install binwalk + dependencies
     DEBIAN_FRONTEND=noninteractive \
     ./forensics/binwalk/deps.sh --yes && \
-    cd forensics/binwalk && \
+    cd ./forensics/binwalk && \
     python3 setup.py install && \
     pip3 install \
       capstone \
       sqlmap \
       wfuzz \
       scapy && \
-    cd /work/enumeration/nmap-script-vulscan && git pull && \
-    cd /work/enumeration/nmap-script-vulners && git pull && \
+    # Install nmap vulnerability scan scripts
     ln -s /work/enumeration/nmap-script-vulscan /usr/share/nmap/scripts/vulscan && \
     ln -s /work/enumeration/nmap-script-vulners/http-vulners-regex.nse /usr/share/nmap/scripts/ && \
     ln -s /work/enumeration/http-vulners-regex.json /usr/share/nmap/nselib/data && \
     ln -s /work/enumeration/http-vulners-paths.txt /usr/share/nmap/nselib/data && \
-    nmap --script-updatedb
-
+    nmap --script-updatedb && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /tmp/*
 
 ENTRYPOINT ["/bin/bash"]
