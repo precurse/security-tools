@@ -54,7 +54,7 @@ RUN dpkg -i /tmp/*.deb && \
     python3 \
     python3-distutils \
     libcurl4-openssl-dev \
-    libssl-dev \
+    libssl-dev && \
     rm -rf /var/lib/apt/lists/*
 
 COPY ./files/ /work
