@@ -12,3 +12,7 @@ before_install:
 
 install:
   - docker build -t precurse/security-tools .
+
+script:
+  - docker run --entrypoint nmap -it precurse/security-tools --version
+  - docker run --entrypoint binwalk -it precurse/security-tools /bin/bash
