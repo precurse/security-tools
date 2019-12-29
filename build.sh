@@ -14,6 +14,9 @@ git submodule update --init --recursive
 
 # Get latest releases of all submodules
 get_latest_release forensics/binwalk
+get_latest_release forensics/bulk_extractor
+get_latest_release attack/bettercap
+get_latest_release attack/pwntools
 get_latest_release wordlists/seclists
 
 sudo docker build -t precurse/security-tools .

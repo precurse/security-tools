@@ -16,11 +16,8 @@ FROM ubuntu:19.04
 
 COPY --from=0 /tmp/*.deb /tmp/
 
-COPY ./files/ /work
+COPY ./files/forensics/binwalk/deps.sh /tmp/deps.sh
 WORKDIR /work
-
-ENV PATH="/go/bin:${PATH}"
-ENV GOPATH="/go"
 
 RUN dpkg -i /tmp/*.deb \
     # apt-key requires gnupg
@@ -52,6 +49,9 @@ RUN dpkg -i /tmp/*.deb \
     libncurses5-dev \
     libcurl4-openssl-dev \
     libssl-dev \
+    libusb-1.0 \
+    libpcap-dev \
+    libnetfilter-queue-dev \
     gdb \
     gdb-multiarch \
     gcc-multilib-mips-linux-gnu \
@@ -79,28 +79,48 @@ RUN dpkg -i /tmp/*.deb \
     && dpkg -i /tmp/cramfs.deb \
     # Install binwalk + dependencies
     && DEBIAN_FRONTEND=noninteractive \
-    ./forensics/binwalk/deps.sh --yes \
-    && cd ./forensics/binwalk \
-    && python3 setup.py install \
-    && pip3 --no-cache-dir install \
-      capstone \
-      sqlmap \
-      wfuzz \
-      scapy \
-    # NMap vulnerability scan scripts
-    && ln -s /work/enumeration/nmap-script-vulscan /usr/share/nmap/scripts/vulscan \
-    && ln -s /work/enumeration/nmap-script-vulners/http-vulners-regex.nse /usr/share/nmap/scripts/ \
-    && ln -s /work/enumeration/http-vulners-regex.json /usr/share/nmap/nselib/data \
-    && ln -s /work/enumeration/http-vulners-paths.txt /usr/share/nmap/nselib/data \
-    && nmap --script-updatedb \
-    # Wordlists
-    && ln -s /work/wordlists /wordlists \
-    # WPScan
-    && gem install wpscan \
-    # Gobuster
-    && go get github.com/OJ/gobuster \
+    /tmp/deps.sh --yes \
     # Cleanup
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
+
+COPY ./files/ /work
+
+# Ruby apps
+RUN gem install wpscan
+
+# Python apps
+RUN cd /work/forensics/binwalk \
+    && python3 setup.py install \
+    && pip3 --no-cache-dir install \
+      sqlmap \
+      wfuzz \
+      scapy \
+      /work/attack/pwntools \
+    # Cleanup
+    && rm -rf /root/.cache/pip \
+    && py3clean /
+
+# Golang apps
+ENV PATH="/go/bin:${PATH}"
+ENV GOPATH="/go"
+
+RUN go get github.com/OJ/gobuster \
+  && cd ./attack/bettercap \
+  && make build \
+  && make install \
+  && make clean \
+  # Cleanup
+  && rm -rf /root/.cache/go-build \
+  && rm -rf $GOPATH/{pkg,src}
+
+# Symlinks
+RUN ln -s /work/enumeration/nmap-script-vulscan /usr/share/nmap/scripts/vulscan \
+  && ln -s /work/enumeration/nmap-script-vulners/http-vulners-regex.nse /usr/share/nmap/scripts/ \
+  && ln -s /work/enumeration/http-vulners-regex.json /usr/share/nmap/nselib/data \
+  && ln -s /work/enumeration/http-vulners-paths.txt /usr/share/nmap/nselib/data \
+  && nmap --script-updatedb \
+  # Wordlists
+  && ln -s /work/wordlists /wordlists
 
 ENTRYPOINT ["/bin/bash"]

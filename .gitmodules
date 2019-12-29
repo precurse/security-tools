@@ -10,3 +10,12 @@
 [submodule "files/wordlists/seclists"]
 	path = files/wordlists/seclists
 	url = https://github.com/danielmiessler/SecLists
+[submodule "files/forensics/bulk_extractor"]
+	path = files/forensics/bulk_extractor
+	url = https://github.com/simsong/bulk_extractor
+[submodule "files/attack/bettercap"]
+	path = files/attack/bettercap
+	url = https://github.com/bettercap/bettercap
+[submodule "files/attack/pwntools"]
+	path = files/attack/pwntools
+	url = https://github.com/Gallopsled/pwntools
