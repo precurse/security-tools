@@ -23,7 +23,9 @@ $ ./build.sh
 ## Tools included
 ### Enumeration
 - nmap (with vulscan + vulners)
+- hping3
 - p0f
+- masscan
 
 ### Web
 - gobuster
@@ -55,3 +57,7 @@ $ ./build.sh
 - pwntools
 - responder
 - dnschef
+
+### Other
+- tor
+- proxychains-ng

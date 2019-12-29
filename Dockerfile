@@ -39,10 +39,15 @@ RUN dpkg -i /tmp/*.deb \
     less \
     cpio \
     sudo \
+    ack-grep \
     bsdmainutils \
     net-tools \
+    dnsutils \
     iputils-ping \
     wireless-tools \
+    hping3 \
+    tor \
+    proxychains4 \
     # Build/Libraries
     autoconf \
     automake \
@@ -68,6 +73,7 @@ RUN dpkg -i /tmp/*.deb \
     g++-arm-linux-gnueabihf \
     # Enumeration
     p0f \
+    masscan \
     # Emulation
     qemu-user-static \
     apktool \
