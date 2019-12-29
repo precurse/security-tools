@@ -42,6 +42,7 @@ RUN dpkg -i /tmp/*.deb \
     bsdmainutils \
     net-tools \
     iputils-ping \
+    wireless-tools \
     # Build/Libraries
     autoconf \
     automake \
@@ -68,7 +69,9 @@ RUN dpkg -i /tmp/*.deb \
     qemu-user-static \
     # Web
     nikto \
-    # Password cracking
+    # Attack
+    ncrack \
+    hydra \
     john \
     cewl \
     # Languages
@@ -129,6 +132,12 @@ RUN go get github.com/OJ/gobuster \
   && rm -rf /root/.cache/go-build \
   && rm -rf $GOPATH/pkg \
   && rm -rf $GOPATH/src
+
+RUN cd ./attack/ncrack \
+  && ./configure \
+  && make \
+  && make install \
+  && make clean
 
 # Symlinks
 RUN ln -s /work/enumeration/nmap-script-vulscan /usr/share/nmap/scripts/vulscan \

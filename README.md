@@ -35,3 +35,6 @@ $ ./build.sh
 - cewl
 - nikto
 - wpscan
+- ncrack
+- hashcat
+- hydra

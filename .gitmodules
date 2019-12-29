@@ -19,3 +19,6 @@
 [submodule "files/attack/pwntools"]
 	path = files/attack/pwntools
 	url = https://github.com/Gallopsled/pwntools
+[submodule "files/attack/ncrack"]
+	path = files/attack/ncrack
+	url = https://github.com/nmap/ncrack
