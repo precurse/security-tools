@@ -67,6 +67,7 @@ RUN dpkg -i /tmp/*.deb \
     g++-arm-linux-gnueabihf \
     # Emulation
     qemu-user-static \
+    p0f \
     # Web
     nikto \
     # Attack
@@ -134,6 +135,11 @@ RUN go get github.com/OJ/gobuster \
   && rm -rf $GOPATH/src
 
 RUN cd ./attack/ncrack \
+  && ./configure \
+  && make \
+  && make install \
+  && make clean \
+  && cd /work/forensics/radare2 \
   && ./configure \
   && make \
   && make install \

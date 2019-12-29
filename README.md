@@ -38,3 +38,5 @@ $ ./build.sh
 - ncrack
 - hashcat
 - hydra
+- radare2
+- p0f

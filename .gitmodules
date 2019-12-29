@@ -22,3 +22,6 @@
 [submodule "files/attack/ncrack"]
 	path = files/attack/ncrack
 	url = https://github.com/nmap/ncrack
+[submodule "files/forensics/radare2"]
+	path = files/forensics/radare2
+	url = https://github.com/radareorg/radare2
