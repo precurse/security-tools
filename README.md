@@ -37,6 +37,7 @@ $ ./build.sh
 
 ### Forensics
 - binwalk
+- bulk_extractor
 
 ### Reverse Engineering / Debugging
 - apktool
@@ -61,3 +62,22 @@ $ ./build.sh
 ### Other
 - tor
 - proxychains-ng
+
+## Usage
+
+### Tor with proxychains
+```bash
+# Start tor as user nobody
+$ su - nobody -s /bin/bash -c 'HOME=/tmp /usr/sbin/tor'
+
+# Default proxychains uses standard tor port
+$ proxychains https://ifconfig.me
+```
+
+### Using r2ghidra Decompiler
+```bash
+$ r2 /bin/some_executable
+s main
+aa # to analyze binary
+pdg
+```

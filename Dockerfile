@@ -43,6 +43,7 @@ RUN dpkg -i /tmp/*.deb \
     bsdmainutils \
     net-tools \
     dnsutils \
+    whois \
     iputils-ping \
     wireless-tools \
     hping3 \
