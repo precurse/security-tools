@@ -21,11 +21,12 @@ $ ./build.sh
 - Perl
 
 ## Tools included
-- QEMU (ARM, MIPS, etc. support)
+- QEMU (Emulation for ARM, MIPS, etc.)
 - nmap (with vulscan + vulners)
 - binwalk
 - bettercap
 - gobuster
+- ffuf
 - scapy
 - pwntools
 - sqlmap

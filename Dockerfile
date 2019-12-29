@@ -120,6 +120,7 @@ ENV PATH="/go/bin:${PATH}"
 ENV GOPATH="/go"
 
 RUN go get github.com/OJ/gobuster \
+  && go get github.com/ffuf/ffuf \
   && cd ./attack/bettercap \
   && make build \
   && make install \
