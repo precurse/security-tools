@@ -19,9 +19,19 @@ COPY --from=0 /tmp/*.deb /tmp/
 COPY ./files/ /work
 WORKDIR /work
 
-RUN dpkg -i /tmp/*.deb && \
-    apt update && \
-    DEBIAN_FRONTEND=noninteractive \
+ENV PATH="/go/bin:${PATH}"
+ENV GOPATH="/go"
+
+RUN dpkg -i /tmp/*.deb \
+    # apt-key requires gnupg
+    && apt update \
+    && apt install -y gnupg \
+    # Add golang repo
+    && echo "deb http://ppa.launchpad.net/longsleep/golang-backports/ubuntu bionic main" > \
+        /etc/apt/sources.list.d/golang.list \
+    && apt-key adv --recv-key --keyserver keyserver.ubuntu.com F6BC817356A3D45E \
+    && apt update \
+    && DEBIAN_FRONTEND=noninteractive \
     apt install -y \
     # Base tools
     git \
@@ -34,12 +44,14 @@ RUN dpkg -i /tmp/*.deb && \
     bsdmainutils \
     net-tools \
     iputils-ping \
-    # Building/Debugging
+    # Build/Libraries
     build-essential \
     liblzma-dev \
     zlib1g-dev \
     liblzo2-dev \
     libncurses5-dev \
+    libcurl4-openssl-dev \
+    libssl-dev \
     gdb \
     gdb-multiarch \
     gcc-multilib-mips-linux-gnu \
@@ -50,34 +62,45 @@ RUN dpkg -i /tmp/*.deb && \
     qemu-user-static \
     # Web
     nikto \
-    # Python
+    # Password cracking
+    john \
+    cewl \
+    # Languages
+    golang-go \
+    ruby \
+    ruby-dev \
     python \
     python-pip \
     python-lzma \
     python3 \
     python3-distutils \
-    libcurl4-openssl-dev \
-    libssl-dev && \
     # cramfs binwalk dependency
-    wget http://mirrors.kernel.org/ubuntu/pool/universe/c/cramfs/cramfsprogs_1.1-6ubuntu1_amd64.deb -O /tmp/cramfs.deb && \
-    dpkg -i /tmp/cramfs.deb && \
+    && wget http://mirrors.kernel.org/ubuntu/pool/universe/c/cramfs/cramfsprogs_1.1-6ubuntu1_amd64.deb -O /tmp/cramfs.deb \
+    && dpkg -i /tmp/cramfs.deb \
     # Install binwalk + dependencies
-    DEBIAN_FRONTEND=noninteractive \
-    ./forensics/binwalk/deps.sh --yes && \
-    cd ./forensics/binwalk && \
-    python3 setup.py install && \
-    pip3 --no-cache-dir install \
+    && DEBIAN_FRONTEND=noninteractive \
+    ./forensics/binwalk/deps.sh --yes \
+    && cd ./forensics/binwalk \
+    && python3 setup.py install \
+    && pip3 --no-cache-dir install \
       capstone \
       sqlmap \
       wfuzz \
-      scapy && \
-    # Install nmap vulnerability scan scripts
-    ln -s /work/enumeration/nmap-script-vulscan /usr/share/nmap/scripts/vulscan && \
-    ln -s /work/enumeration/nmap-script-vulners/http-vulners-regex.nse /usr/share/nmap/scripts/ && \
-    ln -s /work/enumeration/http-vulners-regex.json /usr/share/nmap/nselib/data && \
-    ln -s /work/enumeration/http-vulners-paths.txt /usr/share/nmap/nselib/data && \
-    nmap --script-updatedb && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -rf /tmp/*
+      scapy \
+    # NMap vulnerability scan scripts
+    && ln -s /work/enumeration/nmap-script-vulscan /usr/share/nmap/scripts/vulscan \
+    && ln -s /work/enumeration/nmap-script-vulners/http-vulners-regex.nse /usr/share/nmap/scripts/ \
+    && ln -s /work/enumeration/http-vulners-regex.json /usr/share/nmap/nselib/data \
+    && ln -s /work/enumeration/http-vulners-paths.txt /usr/share/nmap/nselib/data \
+    && nmap --script-updatedb \
+    # Wordlists
+    && ln -s /work/wordlists /wordlists \
+    # WPScan
+    && gem install wpscan \
+    # Gobuster
+    && go get github.com/OJ/gobuster \
+    # Cleanup
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/*
 
 ENTRYPOINT ["/bin/bash"]
