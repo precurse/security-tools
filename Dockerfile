@@ -33,6 +33,7 @@ RUN dpkg -i /tmp/*.deb \
     # Base tools
     git \
     vim \
+    tmux \
     wget \
     curl \
     less \
@@ -42,6 +43,11 @@ RUN dpkg -i /tmp/*.deb \
     net-tools \
     iputils-ping \
     # Build/Libraries
+    autoconf \
+    automake \
+    bison \
+    flex \
+    libxml2-dev \
     build-essential \
     liblzma-dev \
     zlib1g-dev \
@@ -86,6 +92,14 @@ RUN dpkg -i /tmp/*.deb \
 
 COPY ./files/ /work
 
+# Bulk Extractor
+RUN cd forensics/bulk_extractor \
+  && bash bootstrap.sh \
+  && ./configure \
+  && make \
+  && make install \
+  && make clean
+
 # Ruby apps
 RUN gem install wpscan
 
@@ -112,7 +126,8 @@ RUN go get github.com/OJ/gobuster \
   && make clean \
   # Cleanup
   && rm -rf /root/.cache/go-build \
-  && rm -rf $GOPATH/{pkg,src}
+  && rm -rf $GOPATH/pkg \
+  && rm -rf $GOPATH/src
 
 # Symlinks
 RUN ln -s /work/enumeration/nmap-script-vulscan /usr/share/nmap/scripts/vulscan \
