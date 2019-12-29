@@ -4,3 +4,9 @@
 
 ## Description
 These are security-related tools contained in a Docker image.
+
+## Building image
+On each run of `build.sh`, the latest git release tag (if available) will be checked out.
+```bash
+$ ./build.sh
+```
