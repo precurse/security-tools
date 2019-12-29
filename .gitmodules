@@ -7,3 +7,6 @@
 [submodule "enumeration/nmap-script-vulners"]
 	path = files/enumeration/nmap-script-vulners
 	url = https://github.com/vulnersCom/nmap-vulners.git
+[submodule "files/wordlists/seclists"]
+	path = files/wordlists/seclists
+	url = https://github.com/danielmiessler/SecLists
