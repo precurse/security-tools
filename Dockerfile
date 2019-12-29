@@ -47,6 +47,7 @@ RUN dpkg -i /tmp/*.deb \
     autoconf \
     automake \
     bison \
+    cmake \
     flex \
     libxml2-dev \
     build-essential \
@@ -143,7 +144,10 @@ RUN cd ./attack/ncrack \
   && ./configure \
   && make \
   && make install \
-  && make clean
+  && make clean \
+  && r2pm init \
+  # Ghira decompiler
+  && r2pm -i r2ghidra-dec
 
 # Symlinks
 RUN ln -s /work/enumeration/nmap-script-vulscan /usr/share/nmap/scripts/vulscan \

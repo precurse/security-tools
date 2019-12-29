@@ -5,7 +5,7 @@
 ## Description
 These are security-related tools contained in a Docker image.
 
-I created this when I wanted a portable environment without running a VM.
+I created this so I can have a disposable/portable environment without running a heavy VM.
 
 ## Building image
 On each run of `build.sh`, the latest git release tag (if available) will be checked out.
@@ -38,5 +38,5 @@ $ ./build.sh
 - ncrack
 - hashcat
 - hydra
-- radare2
+- radare2 (with Ghidra decompiler plugin)
 - p0f
