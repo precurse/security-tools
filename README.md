@@ -5,7 +5,16 @@
 ## Description
 These are security-related tools contained in a Docker image.
 
-I created this so I can have a disposable/portable environment without running a heavy VM.
+## History
+I created this with the following requirements in mind:
+- Portability: I wanted a cross-platform way of running my toolset.
+- Consistent: I want a fresh environment every time I run my tools.
+- Modular: I wanted to make it easy to add or remove packages at runtime or during build.
+- Current: Packages should be as close to their current release as possible.
+
+I chose Ubuntu as the base image since it generally has good package support. Arch was an option, since it usually has a good selection of current packages, but I didn't want to rely on the Arch User Repository (AUR) for installing packages.
+
+The repository is setup in a way so builds are as automated as possible, to minimize time spent maintaining the image (i.e. no version pinning). When possible, packages are pulled from the standard Ubuntu repo except in cases where a more current version is desired (nmap, binwalk, ncrack, etc.).
 
 ## Building image
 On each run of `build.sh`, the latest git release tag (if available) will be checked out.
@@ -64,6 +73,15 @@ $ ./build.sh
 - proxychains-ng
 
 ## Usage
+### Shell with current working directory mounted inside container
+```bash
+$ docker run -v `pwd`:`pwd` -w `pwd` -it precurse/security-tools
+```
+
+### Bettercap
+```bash
+$ docker run --privileged --net=host -it precurse/security-tools bettercap
+```
 
 ### Tor with proxychains
 ```bash
