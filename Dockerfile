@@ -66,9 +66,11 @@ RUN dpkg -i /tmp/*.deb \
     binutils-arm-linux-gnueabi \
     gcc-arm-linux-gnueabihf \
     g++-arm-linux-gnueabihf \
+    # Enumeration
+    p0f \
     # Emulation
     qemu-user-static \
-    p0f \
+    apktool \
     # Web
     nikto \
     # Attack
@@ -85,6 +87,8 @@ RUN dpkg -i /tmp/*.deb \
     python-lzma \
     python3 \
     python3-distutils \
+    android-tools-adb \
+    android-tools-fastboot \
     # cramfs binwalk dependency
     && wget http://mirrors.kernel.org/ubuntu/pool/universe/c/cramfs/cramfsprogs_1.1-6ubuntu1_amd64.deb -O /tmp/cramfs.deb \
     && dpkg -i /tmp/cramfs.deb \
@@ -115,7 +119,10 @@ RUN cd /work/forensics/binwalk \
       sqlmap \
       wfuzz \
       scapy \
+      dnslib \
       /work/attack/pwntools \
+    && curl https://raw.githubusercontent.com/iphelix/dnschef/master/dnschef.py -o /usr/local/bin/dnschef.py \
+    && chmod 0755 /usr/local/bin/dnschef.py \
     # Cleanup
     && rm -rf /root/.cache/pip \
     && py3clean /
@@ -158,4 +165,4 @@ RUN ln -s /work/enumeration/nmap-script-vulscan /usr/share/nmap/scripts/vulscan 
   # Wordlists
   && ln -s /work/wordlists /wordlists
 
-ENTRYPOINT ["/bin/bash"]
+CMD ["/bin/bash"]

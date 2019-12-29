@@ -25,3 +25,6 @@
 [submodule "files/forensics/radare2"]
 	path = files/forensics/radare2
 	url = https://github.com/radareorg/radare2
+[submodule "files/attack/Responder"]
+	path = files/attack/Responder
+	url = https://github.com/lgandx/Responder

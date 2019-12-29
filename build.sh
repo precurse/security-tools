@@ -19,6 +19,7 @@ get_latest_release forensics/radare2
 get_latest_release attack/bettercap
 get_latest_release attack/ncrack
 get_latest_release attack/pwntools
+get_latest_release attack/Responder
 get_latest_release wordlists/seclists
 
 sudo docker build -t precurse/security-tools .

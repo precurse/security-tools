@@ -21,22 +21,37 @@ $ ./build.sh
 - Perl
 
 ## Tools included
-- QEMU (Emulation for ARM, MIPS, etc.)
+### Enumeration
 - nmap (with vulscan + vulners)
-- binwalk
-- bettercap
+- p0f
+
+### Web
 - gobuster
 - ffuf
-- scapy
-- pwntools
 - sqlmap
-- wfuzz
-- john the ripper
-- cewl
 - nikto
+- wfuzz
 - wpscan
-- ncrack
+
+### Forensics
+- binwalk
+
+### Reverse Engineering / Debugging
+- apktool
+- adb/fastboot (Android)
+- QEMU (Emulation for ARM, MIPS, etc.)
+- radare2 (with Ghidra decompiler plugin)
+
+### Password Breaking
+- cewl
 - hashcat
 - hydra
-- radare2 (with Ghidra decompiler plugin)
-- p0f
+- john the ripper
+- ncrack
+
+### Sniffing / Spoofing
+- bettercap
+- scapy
+- pwntools
+- responder
+- dnschef
