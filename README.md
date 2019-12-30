@@ -30,7 +30,7 @@ $ ./build.sh
 - Perl
 
 ## Tools included
-### Enumeration
+### Enumeration / Fingerprinting
 - nmap (with vulscan + vulners)
 - hping3
 - p0f
