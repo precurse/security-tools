@@ -22,6 +22,6 @@ script:
   - docker run --entrypoint gobuster -it $IMAGE_NAME -h
   - docker run --entrypoint binwalk -it $IMAGE_NAME /bin/bash
   - docker run --entrypoint john -it $IMAGE_NAME
-  - docker run --entrypoint cewl -it $IMAGE_NAME
+  - docker run --entrypoint cewl -it $IMAGE_NAME --help
   - docker run --entrypoint ffuf -it $IMAGE_NAME -V
   - docker run --entrypoint ncrack -it $IMAGE_NAME --version
