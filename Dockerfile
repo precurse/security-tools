@@ -118,7 +118,11 @@ RUN cd forensics/bulk_extractor \
   && make clean
 
 # Ruby apps
-RUN gem install wpscan
+RUN gem install \
+    wpscan \
+    snmp \
+  && curl http://www.nothink.org/codes/snmpcheck/snmpcheck-1.9.rb -o /usr/local/bin/snmpcheck \
+  && chmod +x /usr/local/bin/snmpcheck
 
 # Python apps
 RUN cd /work/forensics/binwalk \
@@ -150,6 +154,7 @@ RUN go get github.com/OJ/gobuster \
   && rm -rf $GOPATH/pkg \
   && rm -rf $GOPATH/src
 
+# Compiled apps
 RUN cd ./attack/ncrack \
   && ./configure \
   && make \

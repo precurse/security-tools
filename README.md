@@ -35,6 +35,7 @@ $ ./build.sh
 - hping3
 - p0f
 - masscan
+- snmpcheck
 
 ### Web
 - gobuster
