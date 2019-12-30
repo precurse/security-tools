@@ -169,6 +169,7 @@ RUN ln -s /work/enumeration/nmap-script-vulscan /usr/share/nmap/scripts/vulscan 
   && ln -s /work/enumeration/nmap-script-vulners/http-vulners-regex.nse /usr/share/nmap/scripts/ \
   && ln -s /work/enumeration/http-vulners-regex.json /usr/share/nmap/nselib/data \
   && ln -s /work/enumeration/http-vulners-paths.txt /usr/share/nmap/nselib/data \
+  && ln -s /work/attack/Responder/Responder.py /usr/local/bin/ \
   && nmap --script-updatedb \
   # Wordlists
   && ln -s /work/wordlists /wordlists
