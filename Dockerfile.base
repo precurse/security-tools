@@ -1,0 +1,78 @@
+FROM ubuntu:19.04
+LABEL maintainer="andrewklaus@gmail.com"
+
+ENV IMAGEDATE 2020-01-05
+
+WORKDIR /work
+
+RUN apt update \
+    && apt install -y gnupg \
+    # Add golang repo
+    && echo "deb http://ppa.launchpad.net/longsleep/golang-backports/ubuntu bionic main" > \
+         /etc/apt/sources.list.d/golang.list \
+    && apt-key adv --recv-key --keyserver keyserver.ubuntu.com F6BC817356A3D45E \
+    && apt update \
+    && DEBIAN_FRONTEND=noninteractive \
+    apt install -y \
+    # Base tools
+    git \
+    vim \
+    tmux \
+    wget \
+    curl \
+    less \
+    cpio \
+    sudo \
+    ack-grep \
+    bsdmainutils \
+    net-tools \
+    dnsutils \
+    tcpdump \
+    whois \
+    iputils-ping \
+    wireless-tools \
+    tzdata \
+    # Build/Libraries
+    autoconf \
+    automake \
+    bison \
+    cmake \
+    flex \
+    libxml2-dev \
+    build-essential \
+    liblzma-dev \
+    zlib1g-dev \
+    liblzo2-dev \
+    libncurses5-dev \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libusb-1.0 \
+    libpcap-dev \
+    libnetfilter-queue-dev \
+    # Languages
+    golang-go \
+    python \
+    python-pip \
+    python-lzma \
+    python3 \
+    python3-distutils \
+    python3-pip \
+    ruby \
+    ruby-dev \
+    # Dependencies needed in all images
+    mysql-common \
+    libtcl8.6 \
+    libmysqlclient20 \
+    && apt remove -y gnupg \
+    && apt autoremove -y \
+    # Cleanup
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/*
+
+COPY ./files/ /work
+
+# Golang apps
+ENV PATH="/go/bin:${PATH}"
+ENV GOPATH="/go"
+
+CMD ["/bin/bash"]

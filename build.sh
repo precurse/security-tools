@@ -22,4 +22,6 @@ get_latest_release attack/pwntools
 get_latest_release attack/Responder
 get_latest_release wordlists/seclists
 
-sudo docker build -t precurse/security-tools .
+sudo docker build -t precurse/security-tools-base -f Dockerfile.base .
+sudo docker build -t precurse/security-tools-re -f Dockerfile.re .
+sudo docker build -t precurse/security-tools -f Dockerfile .

@@ -1,5 +1,4 @@
-FROM ubuntu:19.04
-ENV IMAGEDATE 2019-12-28
+FROM precurse/security-tools-base
 
 WORKDIR /tmp
 
@@ -12,73 +11,22 @@ RUN apt update && \
     curl -L http://nmap.org/dist/nping-0.${NMAP_VER}-1.x86_64.rpm -O && \
     alien * && rm *.rpm
 
-FROM ubuntu:19.04
+FROM precurse/security-tools-base
 
 COPY --from=0 /tmp/*.deb /tmp/
 
-COPY ./files/forensics/binwalk/deps.sh /tmp/deps.sh
 WORKDIR /work
 
 RUN dpkg -i /tmp/*.deb \
-    # apt-key requires gnupg
-    && apt update \
-    && apt install -y gnupg \
-    # Add golang repo
-    && echo "deb http://ppa.launchpad.net/longsleep/golang-backports/ubuntu bionic main" > \
-        /etc/apt/sources.list.d/golang.list \
-    && apt-key adv --recv-key --keyserver keyserver.ubuntu.com F6BC817356A3D45E \
     && apt update \
     && DEBIAN_FRONTEND=noninteractive \
     apt install -y \
-    # Base tools
-    git \
-    vim \
-    tmux \
-    wget \
-    curl \
-    less \
-    cpio \
-    sudo \
-    ack-grep \
-    bsdmainutils \
-    net-tools \
-    dnsutils \
-    tcpdump \
-    whois \
-    iputils-ping \
-    wireless-tools \
     hping3 \
     tor \
     proxychains4 \
-    # Build/Libraries
-    autoconf \
-    automake \
-    bison \
-    cmake \
-    flex \
-    libxml2-dev \
-    build-essential \
-    liblzma-dev \
-    zlib1g-dev \
-    liblzo2-dev \
-    libncurses5-dev \
-    libcurl4-openssl-dev \
-    libssl-dev \
-    libusb-1.0 \
-    libpcap-dev \
-    libnetfilter-queue-dev \
-    gdb \
-    gdb-multiarch \
-    gcc-multilib-mips-linux-gnu \
-    binutils-arm-linux-gnueabi \
-    gcc-arm-linux-gnueabihf \
-    g++-arm-linux-gnueabihf \
     # Enumeration
     p0f \
     masscan \
-    # Emulation
-    qemu-user-static \
-    apktool \
     # Web
     nikto \
     # Attack
@@ -86,36 +34,9 @@ RUN dpkg -i /tmp/*.deb \
     hydra \
     john \
     cewl \
-    # Languages
-    golang-go \
-    ruby \
-    ruby-dev \
-    python \
-    python-pip \
-    python-lzma \
-    python3 \
-    python3-distutils \
-    android-tools-adb \
-    android-tools-fastboot \
-    # cramfs binwalk dependency
-    && wget http://mirrors.kernel.org/ubuntu/pool/universe/c/cramfs/cramfsprogs_1.1-6ubuntu1_amd64.deb -O /tmp/cramfs.deb \
-    && dpkg -i /tmp/cramfs.deb \
-    # Install binwalk + dependencies
-    && DEBIAN_FRONTEND=noninteractive \
-    /tmp/deps.sh --yes \
     # Cleanup
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
-
-COPY ./files/ /work
-
-# Bulk Extractor
-RUN cd forensics/bulk_extractor \
-  && bash bootstrap.sh \
-  && ./configure \
-  && make \
-  && make install \
-  && make clean
 
 # Ruby apps
 RUN gem install \
@@ -125,9 +46,7 @@ RUN gem install \
   && chmod +x /usr/local/bin/snmpcheck
 
 # Python apps
-RUN cd /work/forensics/binwalk \
-    && python3 setup.py install \
-    && pip3 --no-cache-dir install \
+RUN pip3 --no-cache-dir install \
       sqlmap \
       wfuzz \
       scapy \
@@ -138,10 +57,6 @@ RUN cd /work/forensics/binwalk \
     # Cleanup
     && rm -rf /root/.cache/pip \
     && py3clean /
-
-# Golang apps
-ENV PATH="/go/bin:${PATH}"
-ENV GOPATH="/go"
 
 RUN go get github.com/OJ/gobuster \
   && go get github.com/ffuf/ffuf \
@@ -159,15 +74,7 @@ RUN cd ./attack/ncrack \
   && ./configure \
   && make \
   && make install \
-  && make clean \
-  && cd /work/forensics/radare2 \
-  && ./configure \
-  && make \
-  && make install \
-  && make clean \
-  && r2pm init \
-  # Ghira decompiler
-  && r2pm -i r2ghidra-dec
+  && make clean
 
 # Symlinks
 RUN ln -s /work/enumeration/nmap-script-vulscan /usr/share/nmap/scripts/vulscan \
