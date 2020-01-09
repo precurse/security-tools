@@ -14,7 +14,7 @@ before_install:
   - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
 
 install:
-  - docker build -t $IMAGE_NAME .
+  - bash ./build.sh
 
 script:
   - bash ./test.sh
