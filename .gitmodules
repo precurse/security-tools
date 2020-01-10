@@ -28,3 +28,6 @@
 [submodule "files/attack/Responder"]
 	path = files/attack/Responder
 	url = https://github.com/lgandx/Responder
+[submodule "files/enumeration/amass"]
+	path = files/enumeration/amass
+	url = https://github.com/OWASP/Amass

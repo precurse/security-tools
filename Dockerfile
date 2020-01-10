@@ -38,6 +38,10 @@ RUN dpkg -i /tmp/*.deb \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
 
+COPY ./files/attack /work/attack
+COPY ./files/enumeration /work/enumeration
+COPY ./files/wordlists /work/wordlists
+
 # Ruby apps
 RUN gem install \
     wpscan \
@@ -60,10 +64,12 @@ RUN pip3 --no-cache-dir install \
 
 RUN go get github.com/OJ/gobuster \
   && go get github.com/ffuf/ffuf \
-  && cd ./attack/bettercap \
+  && cd /work/attack/bettercap \
   && make build \
   && make install \
   && make clean \
+  && cd /work/enumeration/amass \
+  && go install ./... \
   # Cleanup
   && rm -rf /root/.cache/go-build \
   && rm -rf $GOPATH/pkg \

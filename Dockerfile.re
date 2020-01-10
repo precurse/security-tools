@@ -3,6 +3,8 @@ ENV IMAGEDATE 2020-01-05
 
 WORKDIR /work
 
+COPY ./files/forensics /work/forensics
+
 RUN apt update \
     && apt update \
     && DEBIAN_FRONTEND=noninteractive \

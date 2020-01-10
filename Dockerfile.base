@@ -69,8 +69,6 @@ RUN apt update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
 
-COPY ./files/ /work
-
 # Golang apps
 ENV PATH="/go/bin:${PATH}"
 ENV GOPATH="/go"
