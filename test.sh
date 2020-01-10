@@ -17,9 +17,11 @@ docker_test ncrack --version
 docker_test bettercap -version
 docker_test responder.py --version
 docker_test dnschef.py --help
+docker_test amass --version
 
 # RE Image Tests
 IMAGE_NAME=precurse/security-tools-re
 
 docker_test binwalk /bin/date
 docker_test r2 -version
+docker_test frida --version
