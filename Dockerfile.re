@@ -42,6 +42,7 @@ RUN cd forensics/bulk_extractor \
 # Python apps
 RUN cd /work/forensics/binwalk \
     && python3 setup.py install \
+    && pip3 install frida-tools \
     # Cleanup
     && rm -rf /root/.cache/pip \
     && py3clean /

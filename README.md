@@ -76,12 +76,12 @@ $ ./build.sh
 ## Usage
 ### Shell with current working directory mounted inside container
 ```bash
-$ docker run -v `pwd`:`pwd` -w `pwd` -it precurse/security-tools
+host$ docker run -v `pwd`:`pwd` -w `pwd` -it precurse/security-tools
 ```
 
 ### Bettercap
 ```bash
-$ docker run --privileged --net=host -it precurse/security-tools bettercap
+host$ docker run --privileged --net=host -it precurse/security-tools bettercap
 ```
 
 ### Tor with proxychains
@@ -95,7 +95,8 @@ $ proxychains https://ifconfig.me
 
 ### Using r2ghidra Decompiler
 ```bash
-$ r2 /bin/some_executable
+host$ docker run -v `pwd`:`pwd` -w `pwd` -it precurse/security-tools-re
+docker$ r2 /bin/some_executable
 s main
 aa # to analyze binary
 pdg
