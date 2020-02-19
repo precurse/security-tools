@@ -92,4 +92,17 @@ RUN ln -s /work/enumeration/nmap-script-vulscan /usr/share/nmap/scripts/vulscan 
   # Wordlists
   && ln -s /work/wordlists /wordlists
 
+# Tests
+RUN nmap --version \
+    && wpscan --version \
+    && gobuster -h \
+    && john \
+    && cewl --help \
+    && ffuf -V \
+    && ncrack --version \
+    && bettercap -version \
+    && responder.py --version \
+    && dnschef.py --help \
+    && amass --version \
+
 CMD ["/bin/bash"]

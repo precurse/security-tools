@@ -15,6 +15,3 @@ before_install:
 
 install:
   - bash ./build.sh
-
-script:
-  - bash ./test.sh

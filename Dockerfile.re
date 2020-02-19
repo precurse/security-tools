@@ -57,4 +57,9 @@ RUN cd /work/forensics/radare2 \
   # Ghira decompiler
   && r2pm -i r2ghidra-dec
 
+# Tests
+RUN binwalk /bin/date \
+    && r2 -version \
+    && frida --version
+
 CMD ["/bin/bash"]
