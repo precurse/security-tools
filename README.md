@@ -36,6 +36,7 @@ $ ./build.sh
 - p0f
 - masscan
 - snmpcheck
+- amass
 
 ### Web
 - gobuster
@@ -54,6 +55,7 @@ $ ./build.sh
 - adb/fastboot (Android)
 - QEMU (Emulation for ARM, MIPS, etc.)
 - radare2 (with Ghidra decompiler plugin)
+- Frida
 
 ### Password Breaking
 - cewl
