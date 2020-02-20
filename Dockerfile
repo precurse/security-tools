@@ -34,6 +34,7 @@ RUN dpkg -i /tmp/*.deb \
     hydra \
     john \
     cewl \
+    hashcat \
     # Cleanup
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
