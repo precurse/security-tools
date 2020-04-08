@@ -2,10 +2,18 @@
 set -ex
 
 function get_latest_release {
-    pushd files/$1
-    git fetch --tags
-    TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
-    git checkout $TAG
+    pushd "files/$1"
+
+    if [ "${2-none}" == 'master' ]
+    then
+        git checkout master
+        git fetch --depth=1
+    else
+        git fetch --tags --force
+        BADTAGS='continuous'
+        TAG=$(git describe --tags `git rev-list --tags --max-count=5`|grep -Ev "$BADTAGS"|head -1)
+        git checkout "${TAG}"
+    fi
     popd
 }
 
@@ -13,6 +21,7 @@ function get_latest_release {
 git submodule update --init --recursive
 
 # Get latest releases of all submodules
+get_latest_release forensics/fernflower master
 get_latest_release forensics/binwalk
 get_latest_release forensics/bulk_extractor
 get_latest_release forensics/radare2

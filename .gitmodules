@@ -31,3 +31,6 @@
 [submodule "files/enumeration/amass"]
 	path = files/enumeration/amass
 	url = https://github.com/OWASP/Amass
+[submodule "files/forensics/fernflower"]
+	path = files/forensics/fernflower
+	url = https://github.com/fesh0r/fernflower
