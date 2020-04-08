@@ -56,6 +56,7 @@ $ ./build.sh
 - QEMU (Emulation for ARM, MIPS, etc.)
 - radare2 (with Ghidra decompiler plugin)
 - Frida
+- Distorm3
 
 ### Password Breaking
 - cewl
