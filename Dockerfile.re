@@ -57,6 +57,21 @@ RUN cd /work/forensics/radare2 \
   # Ghira decompiler
   && r2pm -i r2ghidra-dec
 
+# Ghidra
+WORKDIR /ghidra
+
+ENV GHIDRA_VER=ghidra_9.1.2_PUBLIC_20200212
+
+RUN curl -SL https://ghidra-sre.org/${GHIDRA_VER}.zip -o ghidra.zip \
+    && unzip ghidra.zip \
+    && rm ghidra.zip \
+    # Force Ghidra to foreground
+    && find . -name ghidraRun -type f | xargs sed -i 's/bg/fg/g' \
+    # Symlink ghidra run to /bin/ghidra
+    && find /ghidra -name ghidraRun -type f | xargs -I{} ln -s {} /bin/ghidra
+
+COPY files/init.sh /init.sh
+
 # Tests
 RUN binwalk /bin/date \
     && r2 -version \

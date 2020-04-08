@@ -92,7 +92,32 @@ host$ docker run --privileged --net=host -it precurse/security-tools bettercap
 $ su - nobody -s /bin/bash -c 'HOME=/tmp /usr/sbin/tor'
 
 # Default proxychains uses standard tor port
-$ proxychains https://ifconfig.me
+$ proxychains curl https://ifconfig.me
+```
+
+### Guidra (GUI)
+*Note:* This has only been tested on Linux since an X11 server is built in.
+This may require tweaking for other operating systems.
+
+To keep a persistent Ghidra state, create a `.ghidra` and `ghidra_projects` folder in your home directory.
+Then have Docker mount these as volumes within the Ghidra container. This is entirely optional.
+
+The following example will disable all network access for Ghidra:
+
+```bash
+host$ mkdir ~/.ghidra ~/ghidra_projects
+
+host$ docker run \
+    --rm -v ${PWD}:/data \
+    --network none \
+    -e UID=$(id -u) \
+    -e GID=$(id -g) \
+    -e USER=$USERNAME \
+    -e DISPLAY=$DISPLAY \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v $HOME/.ghidra:$HOME/.ghidra \
+    -v $HOME/ghidra_projects:$HOME/ghidra_projects \
+    -it precurse/security-tools-re ghidra
 ```
 
 ### Using r2ghidra Decompiler
