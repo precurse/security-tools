@@ -34,3 +34,6 @@
 [submodule "files/forensics/fernflower"]
 	path = files/forensics/fernflower
 	url = https://github.com/fesh0r/fernflower
+[submodule "files/forensics/volatility"]
+	path = files/forensics/volatility
+	url = https://github.com/volatilityfoundation/volatility

@@ -55,6 +55,7 @@ $ ./build.sh update
 ### Forensics
 - binwalk
 - bulk_extractor
+- volatility
 
 ### Reverse Engineering / Debugging
 - apktool
