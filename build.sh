@@ -24,6 +24,7 @@ if [ ${1-none} == "update" ]
 then
     # Get latest releases of all submodules
     get_latest_release forensics/fernflower master
+    get_latest_release forensics/volatility
     get_latest_release forensics/binwalk
     get_latest_release forensics/bulk_extractor
     get_latest_release forensics/radare2

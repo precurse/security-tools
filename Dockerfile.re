@@ -42,9 +42,12 @@ RUN cd forensics/bulk_extractor \
 # Python apps
 RUN cd /work/forensics/binwalk \
     && python3 setup.py install \
+    && cd /work/forensics/volatility \
+    && python2 setup.py install \
+    && pip2 install \
+        distorm3 \
     && pip3 install \
         frida-tools \
-        distorm3 \
     # Cleanup
     && rm -rf /root/.cache/pip \
     && py3clean /
@@ -77,6 +80,7 @@ COPY files/init.sh /init.sh
 # Tests
 RUN binwalk /bin/date \
     && r2 -version \
-    && frida --version
+    && frida --version \
+    && python2 /work/forensics/volatility/vol.py -h >/dev/null
 
-ENTRYPOINT ["/init.sh"]
+CMD ["/bin/bash"]
