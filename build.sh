@@ -20,16 +20,19 @@ function get_latest_release {
 # Ensure submodules updated
 git submodule update --init --recursive
 
-# Get latest releases of all submodules
-get_latest_release forensics/fernflower master
-get_latest_release forensics/binwalk
-get_latest_release forensics/bulk_extractor
-get_latest_release forensics/radare2
-get_latest_release attack/bettercap
-get_latest_release attack/ncrack
-get_latest_release attack/pwntools
-get_latest_release attack/Responder
-get_latest_release wordlists/seclists
+if [ ${1-none} == "update" ]
+then
+    # Get latest releases of all submodules
+    get_latest_release forensics/fernflower master
+    get_latest_release forensics/binwalk
+    get_latest_release forensics/bulk_extractor
+    get_latest_release forensics/radare2
+    get_latest_release attack/bettercap
+    get_latest_release attack/ncrack
+    get_latest_release attack/pwntools
+    get_latest_release attack/Responder
+    get_latest_release wordlists/seclists
+fi
 
 sudo docker build -t precurse/security-tools-base -f Dockerfile.base .
 sudo docker build -t precurse/security-tools-re -f Dockerfile.re .

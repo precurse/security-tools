@@ -79,4 +79,4 @@ RUN binwalk /bin/date \
     && r2 -version \
     && frida --version
 
-CMD ["/bin/bash"]
+ENTRYPOINT ["/init.sh"]

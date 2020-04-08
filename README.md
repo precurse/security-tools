@@ -17,9 +17,15 @@ I chose Ubuntu as the base image since it generally has good package support. Ar
 The repository is setup in a way so builds are as automated as possible, to minimize time spent maintaining the image (i.e. no version pinning). When possible, packages are pulled from the standard Ubuntu repo except in cases where a more current version is desired (nmap, binwalk, ncrack, etc.).
 
 ## Building image
-On each run of `build.sh`, the latest git release tag (if available) will be checked out.
 ```bash
 $ ./build.sh
+```
+
+### Build with latest packages
+The latest git release tag (if available) will be checked out.
+
+```bash
+$ ./build.sh update
 ```
 
 ## Language Support
