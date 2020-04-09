@@ -2,7 +2,17 @@ FROM precurse/security-tools-base
 ENV IMAGEDATE 2020-01-05
 
 WORKDIR /work
+COPY ./files/forensics/fernflower .
 
+RUN apt update \
+    && apt install -y gradle \
+    && gradle build
+
+FROM precurse/security-tools-base
+
+WORKDIR /work
+
+COPY --from=0 /work/build/libs/fernflower.jar /opt/fernflower.jar
 COPY ./files/forensics /work/forensics
 
 RUN apt update \
@@ -76,6 +86,7 @@ RUN curl -SL https://ghidra-sre.org/${GHIDRA_VER}.zip -o ghidra.zip \
     && find /ghidra -name ghidraRun -type f | xargs -I{} ln -s {} /bin/ghidra
 
 COPY files/init.sh /init.sh
+COPY files/fernflower /usr/local/bin/fernflower
 
 # Tests
 RUN binwalk /bin/date \

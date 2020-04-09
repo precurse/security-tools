@@ -136,3 +136,8 @@ s main
 aa # to analyze binary
 pdg
 ```
+
+### Using fernflower Java decompiler
+```bash
+host$ docker run -v `pwd`:`pwd` -w `pwd` -it precurse/security-tools-re fernflower lib/*.jar source/
+```
