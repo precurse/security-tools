@@ -104,6 +104,8 @@ RUN nmap --version \
     && bettercap -version \
     && responder.py --version \
     && dnschef.py --help \
-    && amass --version \
+    && amass --version
+
+COPY files/tor_cli /usr/local/bin/tor_cli
 
 CMD ["/bin/bash"]

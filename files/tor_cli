@@ -1,0 +1,3 @@
+#!/bin/bash
+su - nobody -s /bin/bash -c 'HOME=/tmp /usr/sbin/tor' &
+bash -i

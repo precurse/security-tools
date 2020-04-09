@@ -91,13 +91,14 @@ host$ docker run -v `pwd`:`pwd` -w `pwd` -it precurse/security-tools
 
 ### Bettercap
 ```bash
-host$ docker run --privileged --net=host -it precurse/security-tools bettercap
+host$ source source.sh
+host$ bettercap
 ```
 
 ### Tor with proxychains
 ```bash
-# Start tor as user nobody
-$ su - nobody -s /bin/bash -c 'HOME=/tmp /usr/sbin/tor'
+host$ source source.sh
+host$ tor_cli
 
 # Default proxychains uses standard tor port
 $ proxychains curl https://ifconfig.me
@@ -114,18 +115,8 @@ The following example will disable all network access for Ghidra:
 
 ```bash
 host$ mkdir ~/.ghidra ~/ghidra_projects
-
-host$ docker run \
-    --rm -v ${PWD}:/data \
-    --network none \
-    -e UID=$(id -u) \
-    -e GID=$(id -g) \
-    -e USER=$USERNAME \
-    -e DISPLAY=$DISPLAY \
-    -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -v $HOME/.ghidra:$HOME/.ghidra \
-    -v $HOME/ghidra_projects:$HOME/ghidra_projects \
-    -it precurse/security-tools-re ghidra
+host$ source source.sh
+host$ ghidra
 ```
 
 ### Using r2ghidra Decompiler
@@ -139,5 +130,6 @@ pdg
 
 ### Using fernflower Java decompiler
 ```bash
-host$ docker run -v `pwd`:`pwd` -w `pwd` -it precurse/security-tools-re fernflower lib/*.jar source/
+host$ source source.sh
+host$ fernflower lib/*.jar source/
 ```
