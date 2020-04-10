@@ -36,6 +36,10 @@ RUN apt update \
     # Install binwalk + dependencies
     && DEBIAN_FRONTEND=noninteractive \
     /work/forensics/binwalk/deps.sh --yes \
+    # Bindiff
+    && curl -SL https://storage.googleapis.com/bindiff-releases/bindiff_6_amd64.deb -o /tmp/bindiff.deb \
+    && echo "bindiff bindiff/accepted-bindiff-license boolean true" | debconf-set-selections \
+    && DEBIAN_FRONTEND=noninteractive apt install -y /tmp/bindiff.deb \
     # Cleanup
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
@@ -85,8 +89,17 @@ RUN curl -SL https://ghidra-sre.org/${GHIDRA_VER}.zip -o ghidra.zip \
     # Symlink ghidra run to /bin/ghidra
     && find /ghidra -name ghidraRun -type f | xargs -I{} ln -s {} /bin/ghidra
 
+WORKDIR /ida
+
+RUN curl -SL https://out7.hex-rays.com/files/idafree70_linux.run -o ida.run \
+    && chmod +x ida.run \
+    && yes y | ./ida.run \
+    && mv y/* . \
+    && rm ida.run
+
 COPY files/init.sh /init.sh
 COPY files/fernflower /usr/local/bin/fernflower
+
 
 # Tests
 RUN binwalk /bin/date \

@@ -21,8 +21,23 @@ function ghidra {
         -v /tmp/.X11-unix:/tmp/.X11-unix \
         -v $HOME/.ghidra:$HOME/.ghidra \
         -v $HOME/work/ghidra_projects:$HOME/ghidra_projects \
+        -v "$(pwd)":"$(pwd)" \
         -e UID=$(id -u) \
         -e GID=$(id -g) \
         -e USER=$USERNAME \
-        -it $IMAGE_RE ghidra;
+        -it $IMAGE_RE "${@-ghidra}";
+    }
+
+function ida {
+    $DOCKER_CMD \
+        -v ${PWD}:/data \
+        --network none \
+        --entrypoint=/init.sh \
+        -e DISPLAY=$DISPLAY \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -v "$(pwd)":"$(pwd)" \
+        -e UID=$(id -u) \
+        -e GID=$(id -g) \
+        -e USER=$USERNAME \
+        -it $IMAGE_RE "${@-/ida/ida64}";
     }

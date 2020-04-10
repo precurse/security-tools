@@ -23,6 +23,7 @@ RUN apt update \
     less \
     cpio \
     sudo \
+    iproute2 \
     ack-grep \
     bsdmainutils \
     net-tools \

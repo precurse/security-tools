@@ -64,6 +64,7 @@ $ ./build.sh update
 - radare2 (with Ghidra decompiler plugin)
 - Frida
 - Distorm3
+- Bindiff
 
 ### Password Breaking
 - cewl
@@ -117,6 +118,19 @@ The following example will disable all network access for Ghidra:
 host$ mkdir ~/.ghidra ~/ghidra_projects
 host$ source source.sh
 host$ ghidra
+```
+
+### IDA Free (GUI)
+```bash
+host$ source source.sh
+host$ ida
+```
+
+### Android Debugging
+```bash
+host$ android adb
+# or
+host$ android fastboot
 ```
 
 ### Using r2ghidra Decompiler
