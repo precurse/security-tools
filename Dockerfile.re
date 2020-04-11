@@ -30,12 +30,8 @@ RUN apt update \
     apktool \
     android-tools-adb \
     android-tools-fastboot \
-    # cramfs binwalk dependency
-    && wget http://mirrors.kernel.org/ubuntu/pool/universe/c/cramfs/cramfsprogs_1.1-6ubuntu1_amd64.deb -O /tmp/cramfs.deb \
-    && dpkg -i /tmp/cramfs.deb \
-    # Install binwalk + dependencies
-    && DEBIAN_FRONTEND=noninteractive \
-    /work/forensics/binwalk/deps.sh --yes \
+    radare2 \
+    binwalk \
     # Bindiff
     && curl -SL https://storage.googleapis.com/bindiff-releases/bindiff_6_amd64.deb -o /tmp/bindiff.deb \
     && echo "bindiff bindiff/accepted-bindiff-license boolean true" | debconf-set-selections \
@@ -54,9 +50,7 @@ RUN cd forensics/bulk_extractor \
   && make clean
 
 # Python apps
-RUN cd /work/forensics/binwalk \
-    && python3 setup.py install \
-    && cd /work/forensics/volatility \
+RUN cd /work/forensics/volatility \
     && python2 setup.py install \
     && pip2 install \
         distorm3 \
@@ -65,16 +59,6 @@ RUN cd /work/forensics/binwalk \
     # Cleanup
     && rm -rf /root/.cache/pip \
     && py3clean /
-
-# Compiled apps
-RUN cd /work/forensics/radare2 \
-  && ./configure \
-  && make \
-  && make install \
-  && make clean \
-  && r2pm init \
-  # Ghira decompiler
-  && r2pm -i r2ghidra-dec
 
 # Ghidra
 WORKDIR /ghidra
@@ -89,7 +73,9 @@ RUN curl -SL https://ghidra-sre.org/${GHIDRA_VER}.zip -o ghidra.zip \
     # Symlink ghidra run to /bin/ghidra
     && find /ghidra -name ghidraRun -type f | xargs -I{} ln -s {} /bin/ghidra \
     # Install bindiff plugin
-    && unzip -d $(echo ${GHIDRA_VER} | awk -F'_' '{print $1 "_" $2 "_" $3 }')/Ghidra/Extensions/ /opt/bindiff/extra/ghidra/ghidra_BinExport.zip
+    && unzip -d $(echo ${GHIDRA_VER} | awk -F'_' '{print $1 "_" $2 "_" $3 }')/Ghidra/Extensions/ /opt/bindiff/extra/ghidra/ghidra_BinExport.zip \
+    # Bindiff workaround. BinExport has binary path wrong
+    && ln -s /opt/bindiff/bin/bindiff /opt/bindiff/bindiff
 
 WORKDIR /ida
 

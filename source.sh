@@ -20,6 +20,7 @@ function ghidra {
         -e DISPLAY=$DISPLAY \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
         -v $HOME/.ghidra:$HOME/.ghidra \
+        -v $HOME/.bindiff:$HOME/.bindiff \
         -v $HOME/work/ghidra_projects:$HOME/ghidra_projects \
         -v "$(pwd)":"$(pwd)" \
         -e UID=$(id -u) \

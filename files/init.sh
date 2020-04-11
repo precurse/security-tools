@@ -15,7 +15,8 @@ export HOME=$(eval echo ~$USER_NAME)
 # Drop privs and preserve env
 if [ -z "$1" ]
 then
-    su -m ${USER_NAME}
+    # Get bash shell
+    exec su -m ${USER_NAME} --session-command bash
 else
-    su -m ${USER_NAME} -c '"$1"' bash $@
+    exec su -m ${USER_NAME} --session-command "$@"
 fi
