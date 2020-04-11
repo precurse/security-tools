@@ -87,7 +87,9 @@ RUN curl -SL https://ghidra-sre.org/${GHIDRA_VER}.zip -o ghidra.zip \
     # Force Ghidra to foreground
     && find . -name ghidraRun -type f | xargs sed -i 's/bg/fg/g' \
     # Symlink ghidra run to /bin/ghidra
-    && find /ghidra -name ghidraRun -type f | xargs -I{} ln -s {} /bin/ghidra
+    && find /ghidra -name ghidraRun -type f | xargs -I{} ln -s {} /bin/ghidra \
+    # Install bindiff plugin
+    && unzip -d $(echo ${GHIDRA_VER} | awk -F'_' '{print $1 "_" $2 "_" $3 }')/Ghidra/Extensions/ /opt/bindiff/extra/ghidra/ghidra_BinExport.zip
 
 WORKDIR /ida
 
