@@ -23,6 +23,7 @@ function ghidra {
         -v $HOME/.bindiff:$HOME/.bindiff \
         -v $HOME/work/ghidra_projects:$HOME/ghidra_projects \
         -v "$(pwd)":"$(pwd)" \
+        -w "$(pwd)" \
         -e UID=$(id -u) \
         -e GID=$(id -g) \
         -e USER=$USERNAME \

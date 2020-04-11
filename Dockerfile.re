@@ -1,4 +1,4 @@
-FROM precurse/security-tools-base
+FROM precurse/security-tools-base AS fernflower-builder
 ENV IMAGEDATE 2020-01-05
 
 WORKDIR /work
@@ -8,11 +8,32 @@ RUN apt update \
     && apt install -y gradle \
     && gradle build
 
+FROM precurse/security-tools-base AS qemu-builder
+
+WORKDIR /qemu-build
+
+RUN export QEMU_VER=$(curl https://download.qemu.org 2>/dev/null | awk -F'a href="' '{ print $2 }' | awk -F'">' '{print $1}' |grep -E '^qemu-.*.tar.xz$' |grep -Ev 'rc[0-9].tar.xz' |tail -1 | sed 's/.tar.xz//g')  \
+    && curl https://download.qemu.org/$QEMU_VER.tar.xz -o qemu.tar.xz \
+    && tar xvf qemu.tar.xz \
+    && mv $QEMU_VER/* . \
+    && rm qemu.tar.xz \
+    && apt update \
+    && apt install -y libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev \
+    && ./configure \
+        --prefix=/qemu \
+        --static \
+        --disable-system \
+        --enable-linux-user \
+    && make -j4 \
+    && make install
+
+
 FROM precurse/security-tools-base
 
 WORKDIR /work
 
-COPY --from=0 /work/build/libs/fernflower.jar /opt/fernflower.jar
+COPY --from=fernflower-builder /work/build/libs/fernflower.jar /opt/fernflower.jar
+COPY --from=qemu-builder /qemu/bin/* /usr/local/bin/
 COPY ./files/forensics /work/forensics
 
 RUN apt update \
@@ -25,8 +46,6 @@ RUN apt update \
     binutils-arm-linux-gnueabi \
     gcc-arm-linux-gnueabihf \
     g++-arm-linux-gnueabihf \
-    # Emulation
-    qemu-user-static \
     apktool \
     android-tools-adb \
     android-tools-fastboot \
@@ -40,6 +59,15 @@ RUN apt update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
 
+WORKDIR /ida
+
+RUN curl -SL https://out7.hex-rays.com/files/idafree70_linux.run -o ida.run \
+    && chmod +x ida.run \
+    && yes y | ./ida.run \
+    && mv y/* . \
+    && rm ida.run
+
+WORKDIR /work
 
 # Bulk Extractor
 RUN cd forensics/bulk_extractor \
@@ -77,17 +105,11 @@ RUN curl -SL https://ghidra-sre.org/${GHIDRA_VER}.zip -o ghidra.zip \
     # Bindiff workaround. BinExport has binary path wrong
     && ln -s /opt/bindiff/bin/bindiff /opt/bindiff/bindiff
 
-WORKDIR /ida
-
-RUN curl -SL https://out7.hex-rays.com/files/idafree70_linux.run -o ida.run \
-    && chmod +x ida.run \
-    && yes y | ./ida.run \
-    && mv y/* . \
-    && rm ida.run
-
 COPY files/init.sh /init.sh
 COPY files/fernflower /usr/local/bin/fernflower
 
+RUN apt update \
+    && apt install -y openjdk-11-jdk-headless
 
 # Tests
 RUN binwalk /bin/date \

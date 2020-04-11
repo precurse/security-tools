@@ -4,10 +4,10 @@ set -ex
 function get_latest_release {
     pushd "files/$1"
 
-    if [ "${2-none}" == 'master' ]
+    if [ -z "${2}" ]
     then
-        git checkout master
-        git fetch --depth=1
+        git checkout "${2}";
+        git fetch --depth=1;
     else
         git fetch --tags --force
         BADTAGS='continuous'
@@ -25,9 +25,7 @@ then
     # Get latest releases of all submodules
     get_latest_release forensics/fernflower master
     get_latest_release forensics/volatility
-    get_latest_release forensics/binwalk
     get_latest_release forensics/bulk_extractor
-    get_latest_release forensics/radare2
     get_latest_release attack/bettercap
     get_latest_release attack/ncrack
     get_latest_release attack/pwntools
