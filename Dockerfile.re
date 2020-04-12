@@ -14,7 +14,7 @@ WORKDIR /qemu-build
 
 RUN export QEMU_VER=$(curl https://download.qemu.org 2>/dev/null | awk -F'a href="' '{ print $2 }' | awk -F'">' '{print $1}' |grep -E '^qemu-.*.tar.xz$' |grep -Ev 'rc[0-9].tar.xz' |tail -1 | sed 's/.tar.xz//g')  \
     && curl https://download.qemu.org/$QEMU_VER.tar.xz -o qemu.tar.xz \
-    && tar xvf qemu.tar.xz \
+    && tar xf qemu.tar.xz \
     && mv $QEMU_VER/* . \
     && rm qemu.tar.xz \
     && apt update \
@@ -94,14 +94,14 @@ WORKDIR /ghidra
 ENV GHIDRA_VER=ghidra_9.1.2_PUBLIC_20200212
 
 RUN curl -SL https://ghidra-sre.org/${GHIDRA_VER}.zip -o ghidra.zip \
-    && unzip ghidra.zip \
+    && unzip -qq ghidra.zip \
     && rm ghidra.zip \
     # Force Ghidra to foreground
     && find . -name ghidraRun -type f | xargs sed -i 's/bg/fg/g' \
     # Symlink ghidra run to /bin/ghidra
     && find /ghidra -name ghidraRun -type f | xargs -I{} ln -s {} /bin/ghidra \
     # Install bindiff plugin
-    && unzip -d $(echo ${GHIDRA_VER} | awk -F'_' '{print $1 "_" $2 "_" $3 }')/Ghidra/Extensions/ /opt/bindiff/extra/ghidra/ghidra_BinExport.zip \
+    && unzip -qq -d $(echo ${GHIDRA_VER} | awk -F'_' '{print $1 "_" $2 "_" $3 }')/Ghidra/Extensions/ /opt/bindiff/extra/ghidra/ghidra_BinExport.zip \
     # Bindiff workaround. BinExport has binary path wrong
     && ln -s /opt/bindiff/bin/bindiff /opt/bindiff/bindiff
 
