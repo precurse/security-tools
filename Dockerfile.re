@@ -108,9 +108,6 @@ RUN curl -SL https://ghidra-sre.org/${GHIDRA_VER}.zip -o ghidra.zip \
 COPY files/init.sh /init.sh
 COPY files/fernflower /usr/local/bin/fernflower
 
-RUN apt update \
-    && apt install -y openjdk-11-jdk-headless
-
 # Tests
 RUN binwalk /bin/date \
     && r2 -version \

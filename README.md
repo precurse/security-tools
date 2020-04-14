@@ -126,6 +126,14 @@ host$ source source.sh
 host$ ida
 ```
 
+### Firefox + BurpSuite Community (GUI)
+This will launch burp and Firefox at the same time.
+
+```bash
+host$ source source.sh
+host$ dproxy
+```
+
 ### Android Debugging
 ```bash
 host$ android adb

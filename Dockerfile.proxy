@@ -1,0 +1,19 @@
+FROM precurse/security-tools-base
+
+WORKDIR /work
+ENV BURP_VER=2020.2.1
+
+RUN apt update \
+    && DEBIAN_FRONTEND=noninteractive \
+    apt install -y \
+        firefox \
+    && curl -SL "https://portswigger.net/burp/releases/download?product=community&version=${BURP_VER}&type=Jar" \
+        --output /burp.jar \
+    # Cleanup
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/*
+
+COPY files/init.sh /init.sh
+COPY files/start_proxy.sh /start_proxy.sh
+
+ENTRYPOINT ["/init.sh"]

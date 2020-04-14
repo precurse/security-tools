@@ -60,6 +60,7 @@ RUN apt update \
     python3-pip \
     ruby \
     ruby-dev \
+    openjdk-11-jre-headless \
     # Dependencies needed in all images
     mysql-common \
     libtcl8.6 \

@@ -1,5 +1,6 @@
 IMAGE_RE="precurse/security-tools-re"
 IMAGE_T="precurse/security-tools"
+IMAGE_PROXY="precurse/security-tools-proxy"
 
 DOCKER_CMD="sudo docker run"
 
@@ -42,4 +43,14 @@ function ida {
         -e GID=$(id -g) \
         -e USER=$USERNAME \
         -it $IMAGE_RE "${@-/ida/ida64}";
+    }
+
+function dproxy {
+    $DOCKER_CMD \
+        -e DISPLAY=$DISPLAY \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -e UID=$(id -u) \
+        -e GID=$(id -g) \
+        -e USER=$USERNAME \
+        -it $IMAGE_PROXY "${@-/start_proxy.sh}";
     }
