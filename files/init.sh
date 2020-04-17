@@ -7,10 +7,15 @@ USER_NAME=${USER:-docker_user}
 # Create user + homedir
 useradd -s /bin/bash -m -u ${USER_ID} ${USER_NAME}
 
+# Allow sudo for user
 echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/docker
 
-# Set proper
+
+# Set proper home directory
 export HOME=$(eval echo ~$USER_NAME)
+
+# Ensure HOME has proper permissions
+chown ${USER_ID} ${HOME}
 
 # Drop privs and preserve env
 if [ -z "$1" ]

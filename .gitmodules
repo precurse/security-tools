@@ -1,6 +1,3 @@
-[submodule "forensics/binwalk"]
-	path = files/forensics/binwalk
-	url = https://github.com/ReFirmLabs/binwalk
 [submodule "enumeration/nmap-script-vulscan"]
 	path = files/enumeration/nmap-script-vulscan
 	url = https://github.com/scipag/vulscan
