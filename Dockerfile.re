@@ -1,5 +1,4 @@
 FROM precurse/security-tools-base AS fernflower-builder
-ENV IMAGEDATE 2020-01-05
 
 WORKDIR /work
 COPY ./files/forensics/fernflower .
@@ -42,7 +41,6 @@ RUN apt update \
     apt install -y \
     gdb \
     gdb-multiarch \
-    gcc-multilib-mips-linux-gnu \
     binutils-arm-linux-gnueabi \
     gcc-arm-linux-gnueabihf \
     g++-arm-linux-gnueabihf \
