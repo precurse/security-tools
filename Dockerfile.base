@@ -6,6 +6,7 @@ ENV IMAGEDATE 2020-08-08
 WORKDIR /work
 
 RUN apt update \
+    && yes | unminimize \
     && apt install -y gnupg \
     # Add golang repo
     && echo "deb http://ppa.launchpad.net/longsleep/golang-backports/ubuntu bionic main" > \
