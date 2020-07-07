@@ -87,7 +87,8 @@ $ ./build.sh update
 ## Usage
 ### Shell with current working directory mounted inside container
 ```bash
-host$ docker run -v `pwd`:`pwd` -w `pwd` -it precurse/security-tools
+host$ source source.sh
+host$ dockershell
 ```
 
 ### Bettercap
@@ -105,10 +106,34 @@ host$ tor_cli
 $ proxychains curl https://ifconfig.me
 ```
 
-### Guidra (GUI)
-*Note:* This has only been tested on Linux since an X11 server is built in.
+### Android Debugging
+```bash
+host$ android adb
+# or
+host$ android fastboot
+```
+
+### r2ghidra Decompiler
+```bash
+host$ source source.sh
+host$ dockershell_re
+docker$ r2 /bin/some_executable
+s main
+aa # to analyze binary
+pdg
+```
+
+### Fernflower Java decompiler
+```bash
+host$ source source.sh
+host$ fernflower lib/*.jar source/
+```
+
+### GUI Apps
+*Note:* These has only been tested on Linux since an X11 server is built in.
 This may require tweaking for other operating systems.
 
+#### Guidra
 To keep a persistent Ghidra state, create a `.ghidra` and `ghidra_projects` folder in your home directory.
 Then have Docker mount these as volumes within the Ghidra container. This is entirely optional.
 
@@ -120,38 +145,30 @@ host$ source source.sh
 host$ ghidra
 ```
 
-### IDA Free (GUI)
+#### IDA Free
 ```bash
 host$ source source.sh
 host$ ida
 ```
 
-### Firefox + BurpSuite Community (GUI)
-This will launch burp and Firefox at the same time.
+#### Firefox
+This will launch a disposable Firefox.
+```bash
+host$ source source.sh
+host$ dfirefox
+```
+
+#### BurpSuite Community
+This will launch Burp listening on 127.0.0.1:8080 on your host.
+```bash
+host$ source source.sh
+host$ dburp
+```
+
+#### Firefox + BurpSuite Community
+This will launch burp and Firefox together. All HTTP requests will go through Burp.
 
 ```bash
 host$ source source.sh
 host$ dproxy
-```
-
-### Android Debugging
-```bash
-host$ android adb
-# or
-host$ android fastboot
-```
-
-### Using r2ghidra Decompiler
-```bash
-host$ docker run -v `pwd`:`pwd` -w `pwd` -it precurse/security-tools-re
-docker$ r2 /bin/some_executable
-s main
-aa # to analyze binary
-pdg
-```
-
-### Using fernflower Java decompiler
-```bash
-host$ source source.sh
-host$ fernflower lib/*.jar source/
 ```
