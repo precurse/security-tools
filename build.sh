@@ -37,3 +37,5 @@ sudo docker build -t precurse/security-tools-base -f Dockerfile.base .
 sudo docker build -t precurse/security-tools-re -f Dockerfile.re .
 sudo docker build -t precurse/security-tools -f Dockerfile .
 sudo docker build -t precurse/security-tools-proxy -f Dockerfile.proxy .
+sudo docker build -t precurse/security-tools-browser -f Dockerfile.browser .
+sudo docker build -t precurse/security-tools-go -f Dockerfile.go .

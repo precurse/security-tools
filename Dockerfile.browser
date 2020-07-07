@@ -1,0 +1,19 @@
+FROM debian:10
+
+ENV IMAGEDATE 2020-07-06
+
+WORKDIR /tmp
+
+RUN apt update \
+    && DEBIAN_FRONTEND=noninteractive \
+    apt install -y \
+        firefox-esr \
+    # Cleanup
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/*
+
+RUN apt update && apt install -y sudo
+
+COPY files/init.sh /init.sh
+
+ENTRYPOINT ["/init.sh"]
