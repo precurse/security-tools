@@ -4,7 +4,7 @@ set -ex
 function get_latest_release {
     pushd "files/$1"
 
-    if [ -z "${2}" ]
+    if [ ! -z "${2}" ]
     then
         git checkout "${2}";
         git fetch --depth=1;
@@ -23,6 +23,7 @@ git submodule update --init --recursive
 if [ ${1-none} == "update" ]
 then
     # Get latest releases of all submodules
+    get_latest_release enumeration/amass
     get_latest_release forensics/fernflower master
     get_latest_release forensics/volatility
     get_latest_release forensics/bulk_extractor
