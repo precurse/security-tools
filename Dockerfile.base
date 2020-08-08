@@ -1,7 +1,7 @@
 FROM ubuntu:19.10
 LABEL maintainer="andrewklaus@gmail.com"
 
-ENV IMAGEDATE 2020-07-06
+ENV IMAGEDATE 2020-08-08
 
 WORKDIR /work
 
