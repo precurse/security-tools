@@ -65,10 +65,6 @@ RUN pip3 --no-cache-dir install \
 
 RUN go get github.com/OJ/gobuster \
   && go get github.com/ffuf/ffuf \
-  && cd /work/attack/bettercap \
-  && make build \
-  && make install \
-  && make clean \
   && cd /work/enumeration/amass \
   && go install ./... \
   # Cleanup
@@ -101,7 +97,6 @@ RUN nmap --version \
     && cewl --help \
     && ffuf -V \
     && ncrack --version \
-    && bettercap -version \
     && responder.py --version \
     && dnschef.py --help \
     && amass --version

@@ -79,12 +79,11 @@ RUN cd forensics/bulk_extractor \
 
 # Python apps
 RUN cd /work/forensics/volatility \
-    && python2 setup.py install \
-    && pip2 install \
-        distorm3 \
+    && python3 setup.py install \
     && pip3 install \
         frida-tools \
         qiling \
+        distorm3 \
     # Cleanup
     && rm -rf /root/.cache/pip \
     && py3clean /

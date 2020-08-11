@@ -1,5 +1,6 @@
 IMAGE_RE="precurse/security-tools-re"
 IMAGE_TOOLS="precurse/security-tools"
+IMAGE_BETTERCAP="bettercap/bettercap"
 IMAGE_GO="precurse/security-tools-go"
 IMAGE_PROXY="precurse/security-tools-proxy"
 IMAGE_BROWSER="precurse/security-tools-browser"
