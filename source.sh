@@ -1,35 +1,43 @@
 IMAGE_RE="precurse/security-tools-re"
-IMAGE_T="precurse/security-tools"
+IMAGE_TOOLS="precurse/security-tools"
 IMAGE_GO="precurse/security-tools-go"
 IMAGE_PROXY="precurse/security-tools-proxy"
 IMAGE_BROWSER="precurse/security-tools-browser"
 
 DOCKER_CMD="sudo docker run"
 
-function dockershell { $DOCKER_CMD -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_T "$@";}
-function dockershell_re { $DOCKER_CMD -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_RE "$@";}
-
+function dockershell { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_TOOLS "$@";}
+function dockershell_re { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_RE "$@";}
 function go { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_GO "go" "$@";}
 
 # cmds with special Docker flags
-function android { $DOCKER_CMD --privileged --net=none -v "$(pwd)":"$(pwd)" -w "$(pwd)" -v /dev/bus/usb:/dev/bus/usb -it $IMAGE_RE "${@-adb}"; }
-function bettercap { $DOCKER_CMD --privileged --net=host -it $IMAGE_T "${@-bettercap}"; }
-function tor_cli { $DOCKER_CMD -it $IMAGE_T ${@-tor_cli};}
-function fernflower { $DOCKER_CMD -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_RE java -jar /opt/fernflower.jar "$@"; }
+function android { $DOCKER_CMD --rm --privileged --net=none -v "$(pwd)":"$(pwd)" -w "$(pwd)" -v /dev/bus/usb:/dev/bus/usb -it $IMAGE_RE "${@-adb}"; }
+function bettercap { $DOCKER_CMD --rm --privileged --net=host -it $IMAGE_TOOLS "${@-bettercap}"; }
+function tor_cli { $DOCKER_CMD --rm -it $IMAGE_TOOLS ${@-tor_cli};}
+function fernflower { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_RE java -jar /opt/fernflower.jar "$@"; }
 
+# Aliases
 alias binwalk="dockershell_re binwalk"
+alias masscan="dockershell masscan"
+alias amass="dockershell amass"
+alias wpscan="dockershell wpscan"
+alias ffuf="dockershell ffuf"
+alias gobuster="dockershell gobuster"
+alias nmap="dockershell nmap"
+alias sqlmap="dockershell sqlmap"
 
 function ghidra {
-    mkdir -p ~/.ghidra ~/.bindiff ~/work/ghidra_projects
+    mkdir -p ~/.ghidra ~/.bindiff ~/ghidra_projects
     $DOCKER_CMD \
         -v ${PWD}:/data \
+        --rm \
         --network none \
         --entrypoint=/init.sh \
         -e DISPLAY=$DISPLAY \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
         -v $HOME/.ghidra:$HOME/.ghidra \
         -v $HOME/.bindiff:$HOME/.bindiff \
-        -v $HOME/work/ghidra_projects:$HOME/ghidra_projects \
+        -v $HOME/ghidra_projects:$HOME/ghidra_projects \
         -v "$(pwd)":"$(pwd)" \
         -w "$(pwd)" \
         -e UID=$(id -u) \
@@ -40,6 +48,7 @@ function ghidra {
 
 function ida {
     $DOCKER_CMD \
+        --rm \
         -v ${PWD}:/data \
         --network none \
         --entrypoint=/init.sh \
@@ -58,8 +67,8 @@ function dfirefox {
         FLAGS=$(cat <<-END
             -e http_proxy=http://127.0.0.1:8080
             -e HTTP_PROXY=http://127.0.0.1:8080
-            -e https_proxy=https://127.0.0.1:8080
-            -e HTTPS_PROXY=https://127.0.0.1:8080
+            -e https_proxy=http://127.0.0.1:8080
+            -e HTTPS_PROXY=http://127.0.0.1:8080
             --net=container:burpsuite
 END
 )
@@ -117,7 +126,7 @@ function dtor {
         --user=nobody \
         -e HOME=/tmp \
         --name tor \
-        -it $IMAGE_T tor;
+        -it $IMAGE_TOOLS tor;
 
     $DOCKER_CMD \
         --rm \
@@ -132,34 +141,33 @@ function dtor {
         -e all_proxy=socks5h://127.0.0.1:9050 \
         --net="container:tor" \
         --name proxy-client \
-        -it $IMAGE_T "${@-/bin/bash}";
+        -it $IMAGE_TOOLS "${@-/bin/bash}";
 }
 
 function dtorgui {
     $DOCKER_CMD \
         -d \
         --rm \
-        --user=nobody \
-        -e HOME=/tmp \
-        --name tor \
-        -it $IMAGE_T tor;
-
-    $DOCKER_CMD \
-        --rm \
         -e DISPLAY=$DISPLAY \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
         -e UID=$(id -u) \
         -e GID=$(id -g) \
         -e USER=$USERNAME \
-        -e http_proxy=socks5h://127.0.0.1:9050 \
-        -e HTTP_PROXY=socks5h://127.0.0.1:9050 \
-        -e https_proxy=socks5h://127.0.0.1:9050 \
-        -e HTTPS_PROXY=socks5h://127.0.0.1:9050 \
-        -e all_proxy=socks5h://127.0.0.1:9050 \
-        -e all_proxy=socks5h://127.0.0.1:9050 \
-        --net="container:tor" \
-        --name proxy-client \
+        -e socks_proxy=socks://127.0.0.1:9050 \
+        -e SOCKS_PROXY=socks://127.0.0.1:9050 \
+        -e all_proxy=socks://127.0.0.1:9050 \
+        -e ALL_PROXY=socks://127.0.0.1:9050 \
+        --name=torfox \
         -it $IMAGE_BROWSER "${@-firefox}";
+
+    $DOCKER_CMD \
+        --rm \
+        --user=nobody \
+        -e HOME=/tmp \
+        --name tor \
+        --net="container:torfox" \
+        -it $IMAGE_TOOLS tor;
+
 }
 
 function reguipriv {
