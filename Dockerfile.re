@@ -39,6 +39,7 @@ RUN apt update \
     && apt update \
     && DEBIAN_FRONTEND=noninteractive \
     apt install -y \
+    openjdk-11-jdk-headless \
     gdb \
     gdb-multiarch \
     binutils-arm-linux-gnueabi \
@@ -49,6 +50,7 @@ RUN apt update \
     android-tools-fastboot \
     radare2 \
     binwalk \
+    openocd \
     # Bindiff
     && curl -SL https://storage.googleapis.com/bindiff-releases/bindiff_6_amd64.deb -o /tmp/bindiff.deb \
     && echo "bindiff bindiff/accepted-bindiff-license boolean true" | debconf-set-selections \
@@ -82,6 +84,7 @@ RUN cd /work/forensics/volatility \
         distorm3 \
     && pip3 install \
         frida-tools \
+        qiling \
     # Cleanup
     && rm -rf /root/.cache/pip \
     && py3clean /
@@ -102,6 +105,11 @@ RUN curl -SL https://ghidra-sre.org/${GHIDRA_VER}.zip -o ghidra.zip \
     && unzip -qq -d $(echo ${GHIDRA_VER} | awk -F'_' '{print $1 "_" $2 "_" $3 }')/Ghidra/Extensions/ /opt/bindiff/extra/ghidra/ghidra_BinExport.zip \
     # Bindiff workaround. BinExport has binary path wrong
     && ln -s /opt/bindiff/bin/bindiff /opt/bindiff/bindiff
+
+
+# Download reference manuals
+RUN GHIDRA_VER_SHORT=`echo ${GHIDRA_VER} | awk -F'_' '{print $1 "_" $2 "_" $3 }'` \
+    && curl -SL https://www.cs.utexas.edu/~simon/378/resources/ARMv7-AR_TRM.pdf --output "$GHIDRA_VER_SHORT/Ghidra/Processors/ARM/data/manuals/Armv7AR_errata.pdf"
 
 COPY files/init.sh /init.sh
 COPY files/fernflower /usr/local/bin/fernflower
