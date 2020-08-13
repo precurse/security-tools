@@ -27,7 +27,6 @@ then
     get_latest_release forensics/fernflower master
     get_latest_release forensics/volatility
     get_latest_release forensics/bulk_extractor
-    get_latest_release attack/bettercap
     get_latest_release attack/ncrack
     get_latest_release attack/pwntools
     get_latest_release attack/Responder

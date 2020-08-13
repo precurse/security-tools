@@ -13,7 +13,7 @@ function go { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_GO "g
 
 # cmds with special Docker flags
 function android { $DOCKER_CMD --rm --privileged --net=none -v "$(pwd)":"$(pwd)" -w "$(pwd)" -v /dev/bus/usb:/dev/bus/usb -it $IMAGE_RE "${@-adb}"; }
-function bettercap { $DOCKER_CMD --rm --privileged --net=host -it $IMAGE_TOOLS "${@-bettercap}"; }
+function bettercap { $DOCKER_CMD --rm --privileged --net=host -it $IMAGE_BETTERCAP "$@"; }
 function tor_cli { $DOCKER_CMD --rm -it $IMAGE_TOOLS ${@-tor_cli};}
 function fernflower { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_RE java -jar /opt/fernflower.jar "$@"; }
 
