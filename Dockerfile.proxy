@@ -2,7 +2,7 @@ FROM precurse/security-tools-base
 
 WORKDIR /work
 # Latest version from https://portswigger.net/burp/releases
-ENV BURP_VER=2020.8
+ENV BURP_VER=2020.9
 
 RUN curl -SL "https://portswigger.net/burp/releases/download?product=community&version=${BURP_VER}&type=Jar" \
         --output /burp.jar
