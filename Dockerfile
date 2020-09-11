@@ -64,6 +64,7 @@ RUN pip3 --no-cache-dir install \
     && rm -rf /root/.cache/pip \
     && py3clean /
 
+# Gobuster/ffuf need access to wordlists
 RUN go get github.com/OJ/gobuster \
   && go get github.com/ffuf/ffuf \
   && cd /work/enumeration/amass \
@@ -72,13 +73,6 @@ RUN go get github.com/OJ/gobuster \
   && rm -rf /root/.cache/go-build \
   && rm -rf $GOPATH/pkg \
   && rm -rf $GOPATH/src
-
-# Compiled apps
-RUN cd ./attack/ncrack \
-  && ./configure \
-  && make \
-  && make install \
-  && make clean
 
 # Symlinks
 RUN ln -s /work/enumeration/nmap-script-vulscan /usr/share/nmap/scripts/vulscan \
