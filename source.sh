@@ -13,19 +13,38 @@ function go { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_GO "g
 
 # cmds with special Docker flags
 function android { $DOCKER_CMD --rm --privileged --net=none -v "$(pwd)":"$(pwd)" -w "$(pwd)" -v /dev/bus/usb:/dev/bus/usb -it $IMAGE_RE "${@-adb}"; }
+function p0f { $DOCKER_CMD --rm --privileged --net=host -it $IMAGE_TOOLS  "p0f" "$@"; }
 function bettercap { $DOCKER_CMD --rm --privileged --net=host -it $IMAGE_BETTERCAP "$@"; }
 function tor_cli { $DOCKER_CMD --rm -it $IMAGE_TOOLS ${@-tor_cli};}
 function fernflower { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_RE java -jar /opt/fernflower.jar "$@"; }
 
 # Aliases
 alias binwalk="dockershell_re binwalk"
-alias masscan="dockershell masscan"
+alias bulk_extractor="dockershell_re bulk_extractor"
 alias amass="dockershell amass"
-alias wpscan="dockershell wpscan"
+alias cewl="dockershell cewl"
 alias ffuf="dockershell ffuf"
 alias gobuster="dockershell gobuster"
+alias masscan="dockershell masscan"
+alias ncrack="dockershell ncrack"
+alias nikto="dockershell nikto"
 alias nmap="dockershell nmap"
+alias snmpcheck="dockershell snmpcheck"
 alias sqlmap="dockershell sqlmap"
+alias wfuzz="dockershell wfuzz"
+alias wpscan="dockershell wpscan"
+
+# Shodan needs a stateful API key
+function shodan {
+    mkdir -p ~/.config/shodan
+    $DOCKER_CMD --rm \
+    --user $(id -u):$(id -g) \
+    -v $HOME/.config/shodan:$HOME/.config/shodan \
+    -e HOME=$HOME \
+    -e USER=$USERNAME \
+    -it $IMAGE_TOOLS "shodan" "$@";
+}
+
 
 function ghidra {
     mkdir -p ~/.ghidra ~/.bindiff ~/ghidra_projects

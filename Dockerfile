@@ -52,6 +52,7 @@ RUN gem install \
 
 # Python apps
 RUN pip3 --no-cache-dir install \
+      shodan \
       sqlmap \
       wfuzz \
       scapy \
@@ -102,5 +103,6 @@ RUN nmap --version \
     && amass --version
 
 COPY files/tor_cli /usr/local/bin/tor_cli
+COPY files/init.sh /init.sh
 
 CMD ["/bin/bash"]
