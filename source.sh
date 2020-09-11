@@ -2,37 +2,52 @@ IMAGE_RE="precurse/security-tools-re"
 IMAGE_TOOLS="precurse/security-tools"
 IMAGE_BETTERCAP="bettercap/bettercap"
 IMAGE_GO="precurse/security-tools-go"
+IMAGE_RECON="precurse/security-tools-recon"
 IMAGE_PROXY="precurse/security-tools-proxy"
 IMAGE_BROWSER="precurse/security-tools-browser"
+IMAGE_GODEV="precurse/security-tools-godev"               # Go Development
 
 DOCKER_CMD="sudo docker run"
 
+# Functions
 function dockershell { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_TOOLS "$@";}
 function dockershell_re { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_RE "$@";}
-function go { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_GO "go" "$@";}
+function go { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_GODEV "go" "$@";}
 
-# cmds with special Docker flags
-function android { $DOCKER_CMD --rm --privileged --net=none -v "$(pwd)":"$(pwd)" -w "$(pwd)" -v /dev/bus/usb:/dev/bus/usb -it $IMAGE_RE "${@-adb}"; }
-function p0f { $DOCKER_CMD --rm --privileged --net=host -it $IMAGE_TOOLS  "p0f" "$@"; }
-function bettercap { $DOCKER_CMD --rm --privileged --net=host -it $IMAGE_BETTERCAP "$@"; }
+## Special Docker flags
 function tor_cli { $DOCKER_CMD --rm -it $IMAGE_TOOLS ${@-tor_cli};}
 function fernflower { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_RE java -jar /opt/fernflower.jar "$@"; }
 
+## Privileged commands
+function android { $DOCKER_CMD --rm --privileged --net=none -v "$(pwd)":"$(pwd)" -w "$(pwd)" -v /dev/bus/usb:/dev/bus/usb -it $IMAGE_RE "${@-adb}"; }
+function p0f { $DOCKER_CMD --rm --privileged --net=host -it $IMAGE_TOOLS  "p0f" "$@"; }
+function bettercap { $DOCKER_CMD --rm --privileged --net=host -it $IMAGE_BETTERCAP "$@"; }
+
+# Unprivileged functions
+function d_unpriv_tools { $DOCKER_CMD --rm -a stdin -a stdout -a stderr --user nobody -i $IMAGE_TOOLS "$@"; }
+function d_unpriv_go { $DOCKER_CMD --rm -a stdin -a stdout -a stderr --user nobody -i $IMAGE_GO "$@"; }
+
 # Aliases
+alias amass="dockershell amass"
 alias binwalk="dockershell_re binwalk"
 alias bulk_extractor="dockershell_re bulk_extractor"
-alias amass="dockershell amass"
-alias cewl="dockershell cewl"
-alias ffuf="dockershell ffuf"
-alias gobuster="dockershell gobuster"
 alias masscan="dockershell masscan"
-alias ncrack="dockershell ncrack"
-alias nikto="dockershell nikto"
 alias nmap="dockershell nmap"
 alias snmpcheck="dockershell snmpcheck"
-alias sqlmap="dockershell sqlmap"
-alias wfuzz="dockershell wfuzz"
 alias wpscan="dockershell wpscan"
+
+## Unprivileged aliases
+alias assetfinder="d_unpriv_go assetfinder"
+alias cewl="d_unpriv_tools cewl"
+alias ffuf="d_unpriv_tools ffuf"
+alias gobuster="d_unpriv_tools gobuster"
+alias gron="d_unpriv_go gron"
+alias meg="d_unpriv_go meg"
+alias nikto="d_unpriv_tools nikto"
+alias ncrack="d_unpriv_tools ncrack"
+alias sqlmap="d_unpriv_tools sqlmap"
+alias waybackurls="d_unpriv_go waybackurls"
+alias wfuzz="d_unpriv_tools wfuzz"
 
 # Shodan needs a stateful API key
 function shodan {

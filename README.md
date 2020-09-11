@@ -5,6 +5,8 @@
 ## Description
 These are security-related tools contained in a Docker image.
 
+Tools are setup to require least privilege. For some applications that means no network access at all (i.e. Ghidra), while others need network and user `nobody` (i.e. gobuster, ffuf, etc.)
+
 ## History
 I created this with the following requirements in mind:
 - Portability: I wanted a cross-platform way of running my toolset.
@@ -36,19 +38,23 @@ $ ./build.sh update
 - Perl
 
 ## Tools included
-### Enumeration / Fingerprinting
-- nmap (with vulscan + vulners)
-- hping3
-- p0f
-- masscan
-- snmpcheck
+
+### Enumeration / Fingerprinting / Recon
 - amass
+- assetfinder
+- hping3
+- masscan
+- meg
+- nmap (with vulscan + vulners)
+- p0f
+- snmpcheck
+- waybackurls
 
 ### Web
-- gobuster
 - ffuf
-- sqlmap
+- gobuster
 - nikto
+- sqlmap
 - wfuzz
 - wpscan
 
