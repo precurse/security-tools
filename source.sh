@@ -7,6 +7,9 @@ IMAGE_PROXY="precurse/security-tools-proxy"
 IMAGE_BROWSER="precurse/security-tools-browser"
 IMAGE_GODEV="precurse/security-tools-godev"               # Go Development
 
+# Wordlists
+WL_DIRMED="/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt"
+
 DOCKER_CMD="sudo docker run"
 
 # Functions
@@ -24,8 +27,8 @@ function p0f { $DOCKER_CMD --rm --privileged --net=host -it $IMAGE_TOOLS  "p0f" 
 function bettercap { $DOCKER_CMD --rm --privileged --net=host -it $IMAGE_BETTERCAP "$@"; }
 
 # Unprivileged functions
-function d_unpriv_tools { $DOCKER_CMD --rm -a stdin -a stdout -a stderr --user nobody -i $IMAGE_TOOLS "$@"; }
-function d_unpriv_go { $DOCKER_CMD --rm -a stdin -a stdout -a stderr --user nobody -i $IMAGE_GO "$@"; }
+function d_unpriv_tools { $DOCKER_CMD --rm --user nobody -i $IMAGE_TOOLS "$@"; }
+function d_unpriv_go { $DOCKER_CMD --rm --user nobody -i $IMAGE_GO "$@"; }
 
 # Aliases
 alias amass="dockershell amass"
@@ -48,6 +51,9 @@ alias ncrack="d_unpriv_tools ncrack"
 alias sqlmap="d_unpriv_tools sqlmap"
 alias waybackurls="d_unpriv_go waybackurls"
 alias wfuzz="d_unpriv_tools wfuzz"
+
+alias ffufq="d_unpriv_tools ffuf -w $WL_DIRMED -u"
+alias ffufqr="d_unpriv_tools ffuf -w $WL_DIRMED -recursion -u"
 
 # Shodan needs a stateful API key
 function shodan {
