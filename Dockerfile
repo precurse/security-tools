@@ -1,30 +1,15 @@
 FROM precurse/security-tools-base
 
-WORKDIR /tmp
-
-# Get latest version of nmap and convert to .deb package format
-RUN apt update && \
-    apt install -y alien curl && \
-    export NMAP_VER=$(curl https://nmap.org/dist/ 2>/dev/null | awk -F'a href="' '{ print $2 }' | egrep '^nmap-[0-9].*x86_64\.rpm' | awk -F '-' '{print $2}' | sort -r |head -1) && \
-    curl -L http://nmap.org/dist/nmap-${NMAP_VER}-1.x86_64.rpm -O && \
-    curl -L http://nmap.org/dist/ncat-${NMAP_VER}-1.x86_64.rpm -O && \
-    curl -L http://nmap.org/dist/nping-0.${NMAP_VER}-1.x86_64.rpm -O && \
-    alien * && rm *.rpm
-
-FROM precurse/security-tools-base
-
-COPY --from=0 /tmp/*.deb /tmp/
-
 WORKDIR /work
 
-RUN dpkg -i /tmp/*.deb \
-    && apt update \
+RUN apt update \
     && DEBIAN_FRONTEND=noninteractive \
     apt install -y \
     hping3 \
     tor \
     proxychains4 \
     # Enumeration
+    nmap \
     p0f \
     masscan \
     # Web
@@ -82,7 +67,8 @@ RUN ln -s /work/enumeration/nmap-script-vulscan /usr/share/nmap/scripts/vulscan 
   && ln -s /work/attack/Responder/Responder.py /usr/local/bin/responder.py \
   && nmap --script-updatedb \
   # Wordlists
-  && ln -s /work/wordlists /wordlists
+  && ln -s /work/wordlists /wordlists \
+  && ln -s /go/bin/* /usr/local/bin
 
 # Tests
 RUN nmap --version \
