@@ -1,0 +1,40 @@
+FROM precurse/security-tools-base AS qemu-builder
+
+WORKDIR /qemu-build
+
+RUN export QEMU_VER=$(curl https://download.qemu.org 2>/dev/null | awk -F'a href="' '{ print $2 }' | awk -F'">' '{print $1}' |grep -E '^qemu-.*.tar.xz$' |grep -Ev 'rc[0-9].tar.xz' |tail -1 | sed 's/.tar.xz//g')  \
+    && curl https://download.qemu.org/$QEMU_VER.tar.xz -o qemu.tar.xz \
+    && tar xf qemu.tar.xz \
+    && mv $QEMU_VER/* . \
+    && rm qemu.tar.xz \
+    && apt update \
+    && apt install -y libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev \
+    && ./configure \
+        --prefix=/qemu \
+        --static \
+        --disable-system \
+        --enable-linux-user \
+    && make -j4 \
+    && make install
+
+
+FROM precurse/security-tools-base
+
+WORKDIR /work
+
+COPY --from=qemu-builder /qemu/bin/* /usr/local/bin/
+
+RUN apt update \
+    && apt update \
+    && DEBIAN_FRONTEND=noninteractive \
+    apt install -y \
+    gdb \
+    gdb-multiarch \
+    binutils-arm-linux-gnueabi \
+    gcc-arm-linux-gnueabihf \
+    g++-arm-linux-gnueabihf \
+    # Cleanup
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/*
+
+CMD ["/bin/bash"]
