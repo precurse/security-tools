@@ -64,13 +64,14 @@ $ ./build.sh update
 - volatility
 
 ### Reverse Engineering / Debugging
-- apktool
 - adb/fastboot (Android)
+- apktool
+- Bindiff
+- Distorm3
+- Frida
+- JD-GUI (Java Decompiler)
 - QEMU (Emulation for ARM, MIPS, etc.)
 - radare2 (with Ghidra decompiler plugin)
-- Frida
-- Distorm3
-- Bindiff
 
 ### Password Breaking
 - cewl
@@ -81,10 +82,10 @@ $ ./build.sh update
 
 ### Sniffing / Spoofing
 - bettercap
-- scapy
+- dnschef
 - pwntools
 - responder
-- dnschef
+- scapy
 
 ### Other
 - tor

@@ -89,8 +89,16 @@ RUN curl -SL https://ghidra-sre.org/${GHIDRA_VER}.zip -o ghidra.zip \
 RUN GHIDRA_VER_SHORT=`echo ${GHIDRA_VER} | awk -F'_' '{print $1 "_" $2 "_" $3 }'` \
     && curl -SL https://www.cs.utexas.edu/~simon/378/resources/ARMv7-AR_TRM.pdf --output "$GHIDRA_VER_SHORT/Ghidra/Processors/ARM/data/manuals/Armv7AR_errata.pdf"
 
+# JD-GUI
+ENV JDGUI_VER=1.6.6
+RUN curl -SL https://github.com/java-decompiler/jd-gui/releases/download/v${JDGUI_VER}/jd-gui-${JDGUI_VER}.jar --output /opt/jd-gui.jar
+
 COPY files/init.sh /init.sh
-COPY files/fernflower /usr/local/bin/fernflower
+COPY files/java_run /usr/local/bin/java_run
+
+# Java symlinks
+RUN ln -s /usr/local/bin/java_run /usr/local/bin/fernflower \
+    && ln -s /usr/local/bin/java_run /usr/local/bin/jd-gui
 
 # Tests
 RUN binwalk /bin/date \

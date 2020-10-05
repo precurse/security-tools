@@ -102,6 +102,22 @@ function ida {
         -it $IMAGE_RE "${@-/ida/ida64}";
     }
 
+function jd-gui {
+    $DOCKER_CMD \
+        -v ${PWD}:/data \
+        --rm \
+        --network none \
+        --entrypoint=/init.sh \
+        -e DISPLAY=$DISPLAY \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -v "$(pwd)":"$(pwd)" \
+        -w "$(pwd)" \
+        -e UID=$(id -u) \
+        -e GID=$(id -g) \
+        -e USER=$USERNAME \
+        -it $IMAGE_RE "${@-jd-gui}";
+    }
+
 function dfirefox {
     if [ "$1" = "burp" ];
     then
