@@ -70,7 +70,7 @@ RUN cd /work/forensics/volatility \
 # Ghidra
 WORKDIR /ghidra
 
-ENV GHIDRA_VER=ghidra_9.1.2_PUBLIC_20200212
+ENV GHIDRA_VER=ghidra_9.2_PUBLIC_20201113
 
 RUN curl -SL https://ghidra-sre.org/${GHIDRA_VER}.zip -o ghidra.zip \
     && unzip -qq ghidra.zip \
