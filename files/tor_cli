@@ -1,3 +1,4 @@
 #!/bin/bash
+echo "SOCKSPort 0.0.0.0:9050" >> /etc/tor/torrc
 su - nobody -s /bin/bash -c 'HOME=/tmp /usr/sbin/tor' &
 bash -i

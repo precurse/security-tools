@@ -18,7 +18,7 @@ function dockershell_re { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it 
 function go { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_GODEV "go" "$@";}
 
 ## Special Docker flags
-function tor_cli { $DOCKER_CMD --rm -it $IMAGE_TOOLS ${@-tor_cli};}
+function tor_cli { $DOCKER_CMD --rm -p 127.0.0.1:9050:9050 -it $IMAGE_TOOLS ${@-tor_cli};}
 function fernflower { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_RE java -jar /opt/fernflower.jar "$@"; }
 
 ## Privileged commands
