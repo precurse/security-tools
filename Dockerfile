@@ -20,6 +20,8 @@ RUN apt update \
     john \
     cewl \
     hashcat \
+    strace \
+    ltrace \
     # Cleanup
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
@@ -42,6 +44,8 @@ RUN pip3 --no-cache-dir install \
       wfuzz \
       scapy \
       dnslib \
+      capstone \
+      ropgadget \
       /work/attack/pwntools \
     && curl https://raw.githubusercontent.com/iphelix/dnschef/master/dnschef.py -o /usr/local/bin/dnschef.py \
     && chmod 0755 /usr/local/bin/dnschef.py \
