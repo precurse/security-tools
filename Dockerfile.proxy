@@ -2,20 +2,16 @@ FROM precurse/security-tools-base
 
 WORKDIR /work
 
-ENV ZAP_VER=2.10.0
-
 RUN apt update \
     && DEBIAN_FRONTEND=noninteractive \
     apt install -y \
         tor \
-    && curl -SL "https://github.com/zaproxy/zaproxy/releases/download/v${ZAP_VER}/ZAP_${ZAP_VER}_Linux.tar.gz" \
-        | tar xz  \
     # Cleanup
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
 
 # Latest version from https://portswigger.net/burp/releases
-ENV BURP_VER=2021.2.1
+ENV BURP_VER=2021.3.1
 
 RUN curl -SL "https://portswigger.net/burp/releases/download?product=community&version=${BURP_VER}&type=Jar" \
         --output /burp.jar
