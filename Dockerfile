@@ -10,6 +10,7 @@ RUN apt update \
     proxychains4 \
     # Enumeration
     nmap \
+    ncat \
     p0f \
     masscan \
     # Web
