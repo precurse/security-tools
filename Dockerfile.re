@@ -18,7 +18,7 @@ RUN apt update \
     && apt update \
     && DEBIAN_FRONTEND=noninteractive \
     apt install -y \
-    openjdk-11-jdk-headless \
+    openjdk-11-jdk \
     gdb \
     gdb-multiarch \
     binutils-arm-linux-gnueabi \
@@ -37,14 +37,6 @@ RUN apt update \
     # Cleanup
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
-
-WORKDIR /ida
-
-RUN curl -SL https://out7.hex-rays.com/files/idafree70_linux.run -o ida.run \
-    && chmod +x ida.run \
-    && yes y | ./ida.run \
-    && mv y/* . \
-    && rm ida.run
 
 WORKDIR /work
 
@@ -70,7 +62,7 @@ RUN cd /work/forensics/volatility \
 # Ghidra
 WORKDIR /ghidra
 
-ENV GHIDRA_VER=ghidra_9.2_PUBLIC_20201113
+ENV GHIDRA_VER=ghidra_9.2.4_PUBLIC_20210427
 
 RUN curl -SL https://ghidra-sre.org/${GHIDRA_VER}.zip -o ghidra.zip \
     && unzip -qq ghidra.zip \
