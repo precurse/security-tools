@@ -11,7 +11,7 @@ RUN apt update \
     && rm -rf /tmp/*
 
 # Latest version from https://portswigger.net/burp/releases
-ENV BURP_VER=2021.3.1
+ENV BURP_VER=2021.8.4
 
 RUN curl -SL "https://portswigger.net/burp/releases/download?product=community&version=${BURP_VER}&type=Jar" \
         --output /burp.jar
