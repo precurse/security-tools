@@ -62,9 +62,11 @@ RUN cd /work/forensics/volatility \
 # Ghidra
 WORKDIR /ghidra
 
-ENV GHIDRA_VER=ghidra_9.2.4_PUBLIC_20210427
+ENV GHIDRA_VER=10.0.4
+ENV GHIDRA_DIR=/ghidra/ghidra_${GHIDRA_VER}_PUBLIC
+ENV GHIDRA_DL=https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_10.0.4_build/ghidra_10.0.4_PUBLIC_20210928.zip
 
-RUN curl -SL https://ghidra-sre.org/${GHIDRA_VER}.zip -o ghidra.zip \
+RUN curl -SL ${GHIDRA_DL} -o ghidra.zip \
     && unzip -qq ghidra.zip \
     && rm ghidra.zip \
     # Force Ghidra to foreground
@@ -72,14 +74,19 @@ RUN curl -SL https://ghidra-sre.org/${GHIDRA_VER}.zip -o ghidra.zip \
     # Symlink ghidra run to /bin/ghidra
     && find /ghidra -name ghidraRun -type f | xargs -I{} ln -s {} /bin/ghidra \
     # Install bindiff plugin
-    && unzip -qq -d $(echo ${GHIDRA_VER} | awk -F'_' '{print $1 "_" $2 "_" $3 }')/Ghidra/Extensions/ /opt/bindiff/extra/ghidra/ghidra_BinExport.zip \
+    && unzip -qq -d ${GHIDRA_DIR}/Ghidra/Extensions/ /opt/bindiff/extra/ghidra/ghidra_BinExport.zip \
     # Bindiff workaround. BinExport has binary path wrong
     && ln -s /opt/bindiff/bin/bindiff /opt/bindiff/bindiff
 
+# Download extra instructions
+RUN cd ${GHIDRA_DIR}/Ghidra/Processors \
+    && git clone https://github.com/Ebiroll/ghidra-xtensa Xtensa \
+    && cd Xtensa \
+    && make \
+    && chmod -R 0755 .
 
 # Download reference manuals
-RUN GHIDRA_VER_SHORT=`echo ${GHIDRA_VER} | awk -F'_' '{print $1 "_" $2 "_" $3 }'` \
-    && curl -SL https://www.cs.utexas.edu/~simon/378/resources/ARMv7-AR_TRM.pdf --output "$GHIDRA_VER_SHORT/Ghidra/Processors/ARM/data/manuals/Armv7AR_errata.pdf"
+RUN curl -SL https://www.cs.utexas.edu/~simon/378/resources/ARMv7-AR_TRM.pdf --output "$GHIDRA_DIR/Ghidra/Processors/ARM/data/manuals/Armv7AR_errata.pdf"
 
 # JD-GUI
 ENV JDGUI_VER=1.6.6
