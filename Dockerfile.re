@@ -51,6 +51,7 @@ RUN cd forensics/bulk_extractor \
 # Python apps
 RUN cd /work/forensics/volatility \
     && python3 setup.py install \
+    && cd /work/forensics/unblob \
     && pip3 install \
         frida-tools \
         qiling \
@@ -62,9 +63,9 @@ RUN cd /work/forensics/volatility \
 # Ghidra
 WORKDIR /ghidra
 
-ENV GHIDRA_VER=10.0.4
+ENV GHIDRA_VER=10.2.2
 ENV GHIDRA_DIR=/ghidra/ghidra_${GHIDRA_VER}_PUBLIC
-ENV GHIDRA_DL=https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_10.0.4_build/ghidra_10.0.4_PUBLIC_20210928.zip
+ENV GHIDRA_DL=https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_10.2.2_build/ghidra_10.2.2_PUBLIC_20221115.zip
 
 RUN curl -SL ${GHIDRA_DL} -o ghidra.zip \
     && unzip -qq ghidra.zip \

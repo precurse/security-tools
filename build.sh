@@ -31,12 +31,13 @@ then
     get_latest_release attack/pwntools
     get_latest_release attack/Responder
     get_latest_release wordlists/seclists
+    get_latest_release onekey-sec/unblob
 fi
 
-sudo docker build -t precurse/security-tools-base -f Dockerfile.base .
-sudo docker build -t precurse/security-tools-re -f Dockerfile.re .
-sudo docker build -t precurse/security-tools -f Dockerfile .
-sudo docker build -t precurse/security-tools-proxy -f Dockerfile.proxy .
-sudo docker build -t precurse/security-tools-browser -f Dockerfile.browser .
-sudo docker build -t precurse/security-tools-go -f Dockerfile.go .
-sudo docker build -t precurse/security-tools-qemu -f Dockerfile.qemu .
+podman build -t precurse/security-tools-base -f Dockerfile.base .
+podman build -t precurse/security-tools-re -f Dockerfile.re .
+podman build -t precurse/security-tools -f Dockerfile .
+podman build -t precurse/security-tools-proxy -f Dockerfile.proxy .
+podman build -t precurse/security-tools-browser -f Dockerfile.browser .
+podman build -t precurse/security-tools-go -f Dockerfile.go .
+podman build -t precurse/security-tools-qemu -f Dockerfile.qemu .

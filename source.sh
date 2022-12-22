@@ -10,19 +10,20 @@ IMAGE_GODEV="precurse/security-tools-godev"               # Go Development
 # Wordlists
 WL_DIRMED="/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt"
 
-DOCKER_CMD="sudo docker run"
+DOCKER_CMD="podman run"
 
 # Functions
-function dockershell { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_TOOLS "$@";}
-function dockershell_re { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_RE "$@";}
-function go { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_GODEV "go" "$@";}
+function dockershell { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)":Z -w "$(pwd)" -it $IMAGE_TOOLS "$@";}
+function dockershell_5000 { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)":Z -p 5000:5000 -w "$(pwd)" -it $IMAGE_TOOLS "$@";}
+function dockershell_re { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)":Z -w "$(pwd)" -it $IMAGE_RE "$@";}
+function go { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)":Z -w "$(pwd)" -it $IMAGE_GODEV "go" "$@";}
 
 ## Special Docker flags
 function tor_cli { $DOCKER_CMD --rm -p 127.0.0.1:9050:9050 -it $IMAGE_TOOLS ${@-tor_cli};}
-function fernflower { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)" -w "$(pwd)" -it $IMAGE_RE java -jar /opt/fernflower.jar "$@"; }
+function fernflower { $DOCKER_CMD --rm -v "$(pwd)":"$(pwd)":Z -w "$(pwd)" -it $IMAGE_RE java -jar /opt/fernflower.jar "$@"; }
 
 ## Privileged commands
-function android { $DOCKER_CMD --rm --privileged --net=none -v "$(pwd)":"$(pwd)" -w "$(pwd)" -v /dev/bus/usb:/dev/bus/usb -it $IMAGE_RE "${@-adb}"; }
+function android { $DOCKER_CMD --rm --privileged --net=none -v "$(pwd)":"$(pwd)":Z -w "$(pwd)" -v /dev/bus/usb:/dev/bus/usb:Z -it $IMAGE_RE "${@-adb}"; }
 function p0f { $DOCKER_CMD --rm --privileged --net=host -it $IMAGE_TOOLS  "p0f" "$@"; }
 function bettercap { $DOCKER_CMD --rm --privileged --net=host -it $IMAGE_BETTERCAP "$@"; }
 
@@ -75,11 +76,11 @@ function ghidra {
         --network none \
         --entrypoint=/init.sh \
         -e DISPLAY=$DISPLAY \
-        -v /tmp/.X11-unix:/tmp/.X11-unix \
-        -v $HOME/.ghidra:$HOME/.ghidra \
-        -v $HOME/.bindiff:$HOME/.bindiff \
-        -v $HOME/ghidra_projects:$HOME/ghidra_projects \
-        -v "$(pwd)":"$(pwd)" \
+        -v /tmp/.X11-unix:/tmp/.X11-unix:Z \
+        -v $HOME/.ghidra:$HOME/.ghidra:Z \
+        -v $HOME/.bindiff:$HOME/.bindiff:Z \
+        -v $HOME/ghidra_projects:$HOME/ghidra_projects:Z \
+        -v "$(pwd)":"$(pwd)":Z \
         -w "$(pwd)" \
         -e UID=$(id -u) \
         -e GID=$(id -g) \
@@ -94,7 +95,7 @@ function ida {
         --network none \
         --entrypoint=/init.sh \
         -e DISPLAY=$DISPLAY \
-        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -v /tmp/.X11-unix:/tmp/.X11-unix:Z \
         -v "$(pwd)":"$(pwd)" \
         -e UID=$(id -u) \
         -e GID=$(id -g) \
@@ -109,7 +110,7 @@ function jd-gui {
         --network none \
         --entrypoint=/init.sh \
         -e DISPLAY=$DISPLAY \
-        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -v /tmp/.X11-unix:/tmp/.X11-unix:Z \
         -v "$(pwd)":"$(pwd)" \
         -w "$(pwd)" \
         -e UID=$(id -u) \
@@ -136,7 +137,7 @@ END
     $DOCKER_CMD \
         --rm \
         -e DISPLAY=$DISPLAY \
-        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -v /tmp/.X11-unix:/tmp/.X11-unix:Z \
         -e UID=$(id -u) \
         -e GID=$(id -g) \
         -e USER=$USERNAME \
@@ -161,7 +162,7 @@ function dburp {
         --rm \
         -e DISPLAY=$DISPLAY \
         -v $HOME/.BurpSuite:$HOME/.BurpSuite \
-        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -v /tmp/.X11-unix:/tmp/.X11-unix:Z \
         -e 8080 \
         -p 127.0.0.1:8080:8080 \
         -e UID=$(id -u) \
@@ -206,7 +207,7 @@ function dtorgui {
         -d \
         --rm \
         -e DISPLAY=$DISPLAY \
-        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -v /tmp/.X11-unix:/tmp/.X11-unix:Z \
         -e UID=$(id -u) \
         -e GID=$(id -g) \
         -e USER=$USERNAME \
@@ -231,7 +232,7 @@ function reguipriv {
     $DOCKER_CMD \
         --rm \
         -e DISPLAY=$DISPLAY \
-        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -v /tmp/.X11-unix:/tmp/.X11-unix:Z \
         --privileged \
         --net=none \
         -e UID=$(id -u) \

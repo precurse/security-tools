@@ -31,3 +31,6 @@
 [submodule "files/forensics/volatility"]
 	path = files/forensics/volatility
 	url = https://github.com/volatilityfoundation/volatility
+[submodule "files/forensics/unblob"]
+	path = files/forensics/unblob
+	url = https://github.com/onekey-sec/unblob

@@ -47,6 +47,7 @@ RUN pip3 --no-cache-dir install \
       dnslib \
       capstone \
       ropgadget \
+      pypykatz \
       /work/attack/pwntools \
     && curl https://raw.githubusercontent.com/iphelix/dnschef/master/dnschef.py -o /usr/local/bin/dnschef.py \
     && chmod 0755 /usr/local/bin/dnschef.py \
@@ -55,8 +56,9 @@ RUN pip3 --no-cache-dir install \
     && py3clean /
 
 # Gobuster/ffuf need access to wordlists
-RUN go get github.com/OJ/gobuster \
-  && go get github.com/ffuf/ffuf \
+RUN go install github.com/ffuf/ffuf@latest \
+  && go install github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest \
+  && go install github.com/projectdiscovery/httpx/cmd/httpx@latest \
   && cd /work/enumeration/amass \
   && go install ./... \
   # Cleanup
@@ -80,7 +82,6 @@ RUN nmap --version \
     && wpscan --version \
     && gobuster -h \
     && john \
-    && cewl --help \
     && ffuf -V \
     && ncrack --version \
     && responder.py --version \
