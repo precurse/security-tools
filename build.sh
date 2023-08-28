@@ -25,13 +25,11 @@ then
     # Get latest releases of all submodules
     get_latest_release enumeration/amass
     get_latest_release forensics/fernflower master
-    get_latest_release forensics/volatility
-    get_latest_release forensics/bulk_extractor
-    get_latest_release attack/ncrack
+    get_latest_release forensics/volatility3
     get_latest_release attack/pwntools
     get_latest_release attack/Responder
     get_latest_release wordlists/seclists
-    get_latest_release onekey-sec/unblob
+    get_latest_release forensics/unblob
 fi
 
 podman build -t precurse/security-tools-base -f Dockerfile.base .
