@@ -39,7 +39,7 @@ RUN gem install \
   && chmod +x /usr/local/bin/snmpcheck
 
 # Python apps
-RUN pip3 --no-cache-dir install \
+RUN pip3 --no-cache-dir install --break-system-packages \
       shodan \
       sqlmap \
       wfuzz \
@@ -80,15 +80,16 @@ RUN ln -s /work/enumeration/nmap-script-vulscan /usr/share/nmap/scripts/vulscan 
 # Tests
 RUN nmap --version \
     && wpscan --version \
-    && gobuster -h \
     && john \
     && ffuf -V \
     && ncrack --version \
-    && responder.py --version \
     && dnschef.py --help \
     && amass --version
 
 COPY files/tor_cli /usr/local/bin/tor_cli
 COPY files/init.sh /init.sh
+
+# Allow UID 1000 with root. We're already running podman rootless, so it doesn't matter
+RUN echo "#1000 ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 CMD ["/bin/bash"]

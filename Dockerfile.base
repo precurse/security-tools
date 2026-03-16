@@ -1,7 +1,7 @@
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 LABEL maintainer="andrewklaus@gmail.com"
 
-ENV IMAGEDATE 2022-12-18
+ENV IMAGEDATE 2026-03-16
 
 WORKDIR /work
 
@@ -52,19 +52,20 @@ RUN apt update \
     libnetfilter-queue-dev \
     # Languages
     golang-go \
-    python \
     python3 \
-    python3-distutils \
     python3-pip \
     ruby \
     ruby-dev \
-    openjdk-11-jre-headless \
+    openjdk-8-jdk-headless \
     # Dependencies needed in all images
     mysql-common \
     libtcl8.6 \
     #libmysqlclient20 \
+    mono-mcs \
     && apt remove -y gnupg \
     && apt autoremove -y \
+    && python3 -m pip install --break-system-packages setuptools \
+    && python3 -m pip cache purge \
     # Cleanup
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
